@@ -1,0 +1,25 @@
+p{
+    margin: 0;
+}
+
+.slider-container{
+    display: flex;
+    justify-content: center;
+}
+
+.name{
+    width: 100px;
+    text-align: left;
+    text-transform: capitalize;
+}
+
+.value{
+    padding: 2px 5px;
+    width: 50px;
+}
+
+input[type="range"]{
+    width: 200px;
+    cursor: pointer;
+    accent-color: #ff44aa;
+}

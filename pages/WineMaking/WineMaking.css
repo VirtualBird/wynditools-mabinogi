@@ -1,0 +1,44 @@
+.wine-making-page h1{
+    margin-block: 22px;
+}
+
+.wine-making-page{
+    text-align: center;
+}
+
+.wine-score{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.wine-score-value{
+    text-align: center;
+    padding: 5px 5px;
+    font-size: 30px;
+    border: 2px solid #555555;
+    border-radius: 10px;
+    width: 120px;
+}
+
+.score-details{
+    margin-top: 50px;
+}
+
+.sources{
+    margin-top: 1em;
+    font-size: 12px;
+    line-height: 1.5;
+}
+.sources p{
+    margin-block: 12px;
+}
+
+.sources a{
+    margin: 0px 4px; 
+}
+
+ul{
+    list-style: none;
+    padding: 0;
+}

@@ -1,0 +1,50 @@
+body {
+  margin: 0;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+}
+
+header{
+  margin: 8px;
+}
+
+header h1{
+  margin: 8px;
+}
+
+h1 {
+  margin:0;
+}
+
+footer{
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.home-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tile-container{
+  margin: 4px;
+  font-size: 32px;
+  text-align: center;
+  align-content: center;
+  height: 100px;
+  width: 400px;
+  border: 2px solid black;
+  border-radius: 10px;
+  transition: border-color 0.3s;
+
+    &:hover{
+      border-color: #ff44aa;
+      transition: border-color 0.3s;
+    }
+}
+
+.not-found-page
+{
+  text-align: center;
+}
