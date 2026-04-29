@@ -14,7 +14,7 @@ export default function Home(){
             
             <Link to="alban-knights-training-stones">
                 <div className="tile-container">
-                    Alan Knight Stone Calculator (WIP)
+                    Alban Knight Stone Calculator
                 </div>
             </Link>
         </div>

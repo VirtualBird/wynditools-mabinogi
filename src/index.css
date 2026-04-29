@@ -5,11 +5,33 @@ body {
 
 header{
   margin: 8px;
+  text-decoration: none;
+}
+
+header a{
+  text-decoration: none;
 }
 
 header h1{
+  display: inline-block;
+  position: relative;
   margin: 8px;
+  color: #ff44aa;
+
+    &:hover{
+      color: #ff66bb;
+    }
+
+    &:active{
+      color: #ac1066;
+    }
+    
+    &:focus{
+      color: #ff9dd3;
+    }
 }
+
+
 
 h1 {
   margin:0;

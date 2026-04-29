@@ -1,0 +1,84 @@
+.alban-knights-page{
+    text-align: center;
+}
+
+.alban-knights-page .stones-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 2em;
+    margin-left: auto;
+    margin-right: auto;
+    /* width: auto; */
+    max-width: 1400px;
+}
+
+.alban-knights-page .stones-container > div{
+    /* border: 1px solid red; */
+    /* flex-wrap: wrap; */
+    flex-grow: 199;
+    flex-basis: 0;
+    
+}
+
+.stone-item{
+    display: flex;
+    
+    transition: background-color 0.3s;
+}
+
+.stone-name{
+    align-content: center;
+    @media (min-width: 1200px) {
+        /* white-space: nowrap; */
+        text-wrap: nowrap;
+    }
+}
+
+.stone-item:hover{
+    background-color: lightgreen;
+    cursor: pointer;
+    
+    transition: none;
+}
+
+.stone-value{
+    flex: 0 0 40px;
+    text-align: left;
+    margin: 2px 2px;
+    font-weight: 500;
+    align-content: center;
+}
+
+.stone-active-value{
+    font-size: 1.2em;
+    padding-block: 6px;
+    border: 1px solid lightgray;
+    
+    background-color: #ddffdd;
+    border-radius: 4px;
+}
+
+.stone-active-slot{
+    padding-block: 8px;
+    border: 1px solid lightgray;
+    
+    background-color: aliceblue;
+    border-radius: 4px;
+
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.stone-active-slot:hover{
+    background-color: lightpink;
+    
+    transition: background-color 0.1s;
+}
+
+.stone-value.positive{
+    color: green;
+}
+.stone-value.negative{
+    color: red;
+}
