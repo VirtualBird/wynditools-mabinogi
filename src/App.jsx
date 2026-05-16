@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Home from "../pages/Home"
 import Wine_Making from '../pages/WineMaking/Wine_Making'
 import AlbanKnights from '../pages/AlbanKnights/AlbanKnights'
+import Enchant from '../pages/Enchant/Enchant'
+import Cooking from '../pages/Cooking/Cooking'
 
 import NotFound from '../pages/NotFound'
 
@@ -25,6 +27,8 @@ function App() {
           <Route index element={<Home/>}/>
           <Route path="wine-making" element={<Wine_Making/>}/>
           <Route path="alban-knights-training-stones" element={<AlbanKnights/>}/>
+          <Route path="enchant" element={<Enchant/>}/>
+          <Route path="cooking" element={<Cooking/>}/>
 
           <Route path="*" element={<NotFound/>}/>
         

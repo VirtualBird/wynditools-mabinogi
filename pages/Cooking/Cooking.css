@@ -1,0 +1,74 @@
+.cooking-page .container{
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+    max-width: 1200px;
+    box-sizing: border-box;
+}
+
+.cooking-search-options{
+    text-align: center;
+}
+
+.cooking-item-search-list{
+    border: 2px solid hotpink;
+    max-height: 400px;
+    overflow-y: auto;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 800px;
+    background-color: rgb(255, 240, 250);
+}
+
+.cooking-item-search{
+    margin-top: 20px;
+    text-align: center;
+
+}
+
+.cooking-item-search-item{
+    display:flex;
+    justify-content: center;
+}
+
+.cooking-item-search-item:hover{
+    background-color: rgb(247, 209, 240);
+    cursor: pointer;
+}
+
+.cooking-item-search-method{
+    text-align: center;
+    /* border: 1px solid red; */
+    flex-basis: 140px;
+}
+
+.cooking-item-search-name{
+    text-align: left;
+    /* border: 1px solid red; */
+    flex:1;
+}
+
+input#item-search{
+    margin-left: 4px;
+    border: 2px solid hotpink;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
+
+.recipe-tree-main-list ul{
+    margin: 0px 20px;
+}
+
+.recipe-tree-main-list li{
+    margin: 2px 0px;
+}
+
+.recipe-tree-main-item{
+    margin-top: 0;
+}
+
+.recipe-tree span{
+    font-size: 0.75rem;
+    color: gray;
+}

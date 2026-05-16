@@ -60,11 +60,19 @@ footer{
   border-radius: 10px;
   transition: border-color 0.3s;
 
-    &:hover{
+  &:hover{
       border-color: #ff44aa;
       transition: border-color 0.3s;
     }
+
+    
 }
+
+.tile-container{
+  text-decoration: none;
+  color:darkblue;
+}
+
 
 .not-found-page
 {

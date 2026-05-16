@@ -4,7 +4,7 @@ import "./AlbanKnights.css"
 
 export default function(){
 
-    const [yellow, setYellow] = React.useState(getStoneByName("Difficulty: Heroic"))
+    const [yellow, setYellow] = React.useState(null)
     const [red, setRed] = React.useState(null)
     const [green, setGreen] = React.useState(null)
     const [gray, setGray] = React.useState(null)
