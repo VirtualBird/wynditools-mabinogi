@@ -21,6 +21,11 @@ export default function Cooking(){
                 console.log("Clicked item in list")
                 handleItemSearchClick(event.target.dataset.name)
             }
+            else if (event.target.dataset.name){
+
+            }
+
+            console.log(event.target)
         }
 
         document.addEventListener('click', handleClick)
@@ -30,6 +35,8 @@ export default function Cooking(){
             console.log("Cleaning up click EventListener...")
             document.removeEventListener('click', handleClick)
         }
+
+        
 
     }, [])
 
@@ -180,9 +187,10 @@ export default function Cooking(){
         if (item){
 
             return <div className="cooking-main-item-content">
-                {item.name ? <h2>{item.name}</h2> : <h2>Undefined Item Name</h2>}
+                <h2>Main Item</h2>
+                {item.name ? <h3>{item.name}</h3> : <h2>Undefined Item Name</h2>}
                 {item.method ? <p>{item.method}</p> : null}
-                {/* {item.recipe ? : null} */}
+                {item.recipe ? renderMainRecipe(): null}
             </div>
         }
         else{
@@ -190,6 +198,23 @@ export default function Cooking(){
                 <p>No Main Dish Selected</p>
                 </div>
         }
+    }
+
+    function renderMainRecipe()
+    {
+        if (mainItem && recipeTree){
+            //Uhh so I need to get the recipe tree
+            const items = mainItem.recipe[recipeTree.selected]
+            console.log("Render this", items)
+            // Might be possible for something to break here if the item returned has no name/percent
+            return <div>
+                <p>Main Ingredients</p>
+                <ul>
+                    {items.map(item => <li>{item.name} ({item.percent}%)</li>)}
+                </ul>
+            </div>
+        }
+        return <></>
     }
 
     function getIngredientObjByName(itemName){
@@ -315,6 +340,81 @@ export default function Cooking(){
         }
     }
 
+    // erm, maybe I should get recipe tree instead?
+    function getBaseIngredientsFromRecipeTree(recipeTree){
+        const ingredientsArr = []
+        // console.log("Starting Base Function ", recipeTree)
+
+        if (recipeTree)
+        {
+            // console.log("exists")
+            //  If going through an array, that means we are going through a nested property
+            if (Array.isArray(recipeTree)){
+                // console.log("F1 Going through nested property", recipeTree)
+
+                //  Go through array and flatten
+                const something1 = recipeTree.map(item => {
+                    // console.log("mapping" ,item)
+                    return getBaseIngredientsFromRecipeTree(item)
+                }).flat()
+
+                // console.log("F1 Result from nested property", something1)
+
+                //push it all to ingredients arr
+                ingredientsArr.push(...something1)
+            }
+            //  If a nested property exists in Recipe Tree
+            else if (recipeTree.nested){
+                // console.log("F2 Nested property exists")
+                // console.log("Checking Nested Property")
+                //  recursively go through that nested property
+                const something2 = getBaseIngredientsFromRecipeTree(recipeTree.nested)
+                // console.log("F2 something2", something2)
+                //push it all to ingredients arr
+                ingredientsArr.push(...something2)
+            }
+            else{
+            //  If none of above then we're returning the base ingredient's name
+                // console.log("F3 Base Ingredient", recipeTree)
+                ingredientsArr.push(recipeTree.name)
+            }
+        }
+
+        // console.log("Returning Base Ingredients: ",ingredientsArr)
+        return ingredientsArr
+    }
+
+    // And then heres a function for turning the baseIngredients list into a counted list as an object
+    function countBaseIngredients(ingredientsArr){
+        const baseIngredientsObj = {}
+
+        for (let ingredient of ingredientsArr){
+            if (baseIngredientsObj.hasOwnProperty(ingredient)){
+                baseIngredientsObj[ingredient] += 1
+            }
+            else{
+                baseIngredientsObj[ingredient] = 1
+            }
+        }
+
+        return baseIngredientsObj
+    }
+
+    function renderBaseIngredients(baseIngObj){
+        const elements = []
+
+        for (const item in baseIngObj){
+            const quantity = baseIngObj[item]
+            elements.push(<li>{`${quantity}x ${item}`}</li>)
+        }
+        
+        const finalElement = <div>
+            <h2>Base Ingredients</h2>
+            <ul>{elements}</ul></div>
+
+        return finalElement
+    }
+
     return (
         <div className="cooking-page">
             <div className="container">
@@ -343,8 +443,12 @@ export default function Cooking(){
                 </div>
 
                 {/* {console.log("Here is the full tree",recipeTree)} */}
+                {recipeTree && renderBaseIngredients((countBaseIngredients(getBaseIngredientsFromRecipeTree(recipeTree))))}
 
                 {renderIngredientTree(recipeTree)}
+
+                {/* {getBaseIngredientsFromRecipeTree(recipeTree)} */}
+                
             </div>
         </div>
     )
