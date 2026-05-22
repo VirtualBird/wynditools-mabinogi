@@ -43,6 +43,10 @@ footer{
   text-align: center;
 }
 
+.italic{
+  font-style: italic;
+}
+
 .home-container{
   display: flex;
   flex-direction: column;

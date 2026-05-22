@@ -1,0 +1,27 @@
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted hotpink;
+}
+
+.tooltip .tooltip-body {
+    position: absolute;
+    z-index: 1000;
+    color: #FFFFFF;
+    bottom: 150%;
+    background-color: #262626;
+    box-shadow: 0 4px 6px -2px #0000000D, 0px 10px 15px -3px #0000001A;
+    width: max-content;
+    max-width: 280px;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.tooltip .tooltip-body:after {
+    position: inherit;
+    content: "";
+    border: 16px solid #0000;
+    border-top-color: #262626;
+    top: calc(100%);
+    left: 5%;
+}
