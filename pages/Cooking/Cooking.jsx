@@ -1,4 +1,10 @@
 import {ingredientsData} from './cookingdata.js'
+import {
+    getCookingRankByMethod,
+    getIngredientObjByName,
+    getMethodByName
+        } from './cookingUtils.js'
+
 import './Cooking.css'
 
 import React from "react"
@@ -14,7 +20,6 @@ export default function Cooking(){
     const [recipeTree, setRecipeTree] = React.useState()
 
     React.useEffect(() => {
-
         function handleClick(event){
             //  If user clicked on item in ItemSearch List
             if (event.target.classList.contains('cooking-item-search-name')){
@@ -27,17 +32,12 @@ export default function Cooking(){
 
             console.log(event.target)
         }
-
         document.addEventListener('click', handleClick)
-
         //  useEffect cleanup function
         return () => {
             console.log("Cleaning up click EventListener...")
             document.removeEventListener('click', handleClick)
         }
-
-        
-
     }, [])
 
     function handleItemSearchClick(itemName){
@@ -189,14 +189,13 @@ export default function Cooking(){
             return <div className="cooking-main-item-content">
                 <h2>Main Item</h2>
                 {item.name ? <h3>{item.name}</h3> : <h2>Undefined Item Name</h2>}
-                {item.method ? <p>{item.method}</p> : null}
+                {item.method ? <p>{`${item.method} (${getCookingRankByMethod(item.method)} Cooking)`}</p> : null}
+                {Object.keys(item.recipe ?? {}).length > 1 ? <p>This item has multiple known recipes</p> : null}
                 {item.recipe ? renderMainRecipe(): null}
             </div>
         }
         else{
-            return <div className="cooking-main-item-content">
-                <p>No Main Dish Selected</p>
-                </div>
+            return null
         }
     }
 
@@ -215,14 +214,6 @@ export default function Cooking(){
             </div>
         }
         return <></>
-    }
-
-    function getIngredientObjByName(itemName){
-        return ingredientsData.find(item => {
-            if (item.name === itemName){
-                return item
-            }
-        })
     }
 
     //  I guess I might need somekind of fancy state handling thing?
@@ -303,7 +294,7 @@ export default function Cooking(){
 
                 return <ul className="recipe-tree-list">{recipeTree.map(item => (
                     <li>
-                        <span>{getRecipeMethod(item.name)}</span>
+                        <span>{getMethodByName(item.name)}</span>
                         <p>{item.name}</p>
                         {renderIngredientTree(item.nested)}
                     </li>
@@ -322,21 +313,6 @@ export default function Cooking(){
         }
         else{
             return <></>
-        }
-    }
-
-    //  Gets cooking method of cooking dish by name
-    function getRecipeMethod(itemName){
-        const itemObj = ingredientsData.find(item => {
-            return item.name === itemName
-        })
-
-        if (itemObj){
-            return itemObj.method
-        }
-        else
-        {
-            return ''
         }
     }
 
@@ -408,7 +384,7 @@ export default function Cooking(){
             elements.push(<li>{`${quantity}x ${item}`}</li>)
         }
         
-        const finalElement = <div>
+        const finalElement = <div className='cooking-base-ingredients'>
             <h2>Base Ingredients</h2>
             <ul>{elements}</ul></div>
 
@@ -438,9 +414,8 @@ export default function Cooking(){
                     </ul>
                 </div>
 
-                <div className="cooking-main-item-content">
-                    {renderMainDish(mainItem)}
-                </div>
+                
+                {renderMainDish(mainItem)}
 
                 {/* {console.log("Here is the full tree",recipeTree)} */}
                 {recipeTree && renderBaseIngredients((countBaseIngredients(getBaseIngredientsFromRecipeTree(recipeTree))))}

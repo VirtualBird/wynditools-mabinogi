@@ -23,8 +23,6 @@
 
 .stone-item{
     display: flex;
-    
-    transition: background-color 0.3s;
 }
 
 .stone-name{
@@ -38,8 +36,6 @@
 .stone-item:hover{
     background-color: lightgreen;
     cursor: pointer;
-    
-    transition: none;
 }
 
 .stone-value{
@@ -70,15 +66,35 @@
     transition: background-color 0.2s;
 }
 
-.stone-active-slot:hover{
-    background-color: lightpink;
-    
-    transition: background-color 0.1s;
-}
+
 
 .stone-value.positive{
     color: green;
 }
 .stone-value.negative{
     color: red;
+}
+
+.yellow-container .stone-active-slot{
+    background-color: #ffffb7;
+}
+
+.red-container .stone-active-slot{
+    background-color: #f7c4c6;
+}
+
+
+.green-container .stone-active-slot{
+    background-color: #90EE90;
+}
+
+
+.gray-container .stone-active-slot{
+    background-color: lightgray;
+}
+
+.stone-active-slot:hover{
+    background-color: lightpink;
+    border-color: red;
+    transition: background-color 0.1s;
 }

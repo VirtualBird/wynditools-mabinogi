@@ -48,6 +48,15 @@
     flex:1;
 }
 
+.cooking-main-item-content,
+.cooking-base-ingredients,
+.recipe-tree{
+    border: 2px solid hotpink;
+    padding: 1em;
+    border-radius: 8px;
+    margin-block: 1em;
+}
+
 input#item-search{
     margin-left: 4px;
     border: 2px solid hotpink;
