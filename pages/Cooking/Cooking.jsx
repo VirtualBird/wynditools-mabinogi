@@ -7,7 +7,7 @@ import {
 
 import './Cooking.css'
 
-import React from "react"
+import React, { useState } from "react"
 
 export default function Cooking(){
 
@@ -15,6 +15,7 @@ export default function Cooking(){
     const [byIngredientIsChecked, setByIngredientIsChecked] = React.useState(false)
 
     const [itemSearch, setItemSearch] = React.useState("")
+    const [searchIsFocused, setSearchFocused] = useState(false)
 
     const [mainItem, setMainItem] = React.useState(null)
     const [recipeTree, setRecipeTree] = React.useState()
@@ -32,11 +33,11 @@ export default function Cooking(){
 
             console.log(event.target)
         }
-        document.addEventListener('click', handleClick)
+        document.addEventListener('mousedown', handleClick)
         //  useEffect cleanup function
         return () => {
             console.log("Cleaning up click EventListener...")
-            document.removeEventListener('click', handleClick)
+            document.removeEventListener('mousedown', handleClick)
         }
     }, [])
 
@@ -161,14 +162,21 @@ export default function Cooking(){
             //  If we have an array of items
             if(list.length > 0){
                 //  return that list as elements
-                const listElements = list.map((item) => {
-                    return <li className="cooking-item-search-item" key={item.name}>
-                        <div className="cooking-item-search-method" data-name={item.name}>{item.method ?? ''}</div>
-                        <div className="cooking-item-search-name" data-name={item.name}>{item.name}</div>
-                    </li>
-                })
+                //but only if the search input is still focused
+                if (searchIsFocused)
+                {
+                    const listElements = list.map((item) => {
+                        return <li className="cooking-item-search-item" key={item.name}>
+                            <div className="cooking-item-search-method" data-name={item.name}>{item.method ?? ''}</div>
+                            <div className="cooking-item-search-name" data-name={item.name}>{item.name}</div>
+                        </li>
+                    })
 
-                return listElements
+                    return listElements
+                }
+                else{
+                    return <p>Hiding list. Click Item Search to show.</p>
+                }
             }
             else
             {
@@ -391,6 +399,8 @@ export default function Cooking(){
         return finalElement
     }
 
+    
+
     return (
         <div className="cooking-page">
             <div className="container">
@@ -407,7 +417,14 @@ export default function Cooking(){
 
                 <div className="cooking-item-search">
                     <label htmlFor="item-search">Item Search</label>
-                    <input type="text" id="item-search" value={itemSearch} onChange={(e) => handleSearchInput(e.target.value)}/>
+                    <input 
+                        type="text" 
+                        onFocus={() => setSearchFocused(true)}
+                        onBlur={() => setSearchFocused(false)} 
+                        id="item-search" 
+                        value={itemSearch} 
+                        onChange={(e) => handleSearchInput(e.target.value)}
+                    />
 
                     <ul className="cooking-item-search-list">
                         {renderItemSearchList()}
