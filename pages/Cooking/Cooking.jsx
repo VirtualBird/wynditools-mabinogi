@@ -159,7 +159,7 @@ export default function Cooking(){
             })
 
             //  If we have an array of items
-            if(list){
+            if(list.length > 0){
                 //  return that list as elements
                 const listElements = list.map((item) => {
                     return <li className="cooking-item-search-item" key={item.name}>
@@ -172,14 +172,14 @@ export default function Cooking(){
             }
             else
             {
-                return <p>List does not exist?</p>
+                return <p>No results...</p>
             }
         }
         else{
             return <p>Search Field is empty</p>
         }
-
-        return <div>Item Search placeholder</div>
+        //  This shouldn't ever display but just incase
+        return <h1>Item Search placeholder</h1>
     }
 
     //  This is the main dish selected
