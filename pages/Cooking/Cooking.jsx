@@ -5,6 +5,8 @@ import {
     getMethodByName
         } from './cookingUtils.js'
 
+import SearchList from './components/SearchList.jsx'
+
 import './Cooking.css'
 
 import React, { useState } from "react"
@@ -142,52 +144,6 @@ export default function Cooking(){
 
     function handleSearchInput(value){
         setItemSearch(value)
-    }
-
-
-    //  Update Searchlist
-    function renderItemSearchList()
-    {
-        // If Item Search field is not blank
-        if (itemSearch){
-            //  Find items based on search conditions and put it into an array
-            const list = ingredientsData.filter((item) => 
-            {
-                const foundByName = byNameIsChecked ? item.name.toLowerCase().includes(itemSearch.toLowerCase()) : false
-                // Implement by Ingredient later I can't do this yet
-                //const foundByIngredient = byIngredientIsChecked ? false : false
-                return foundByName
-            })
-
-            //  If we have an array of items
-            if(list.length > 0){
-                //  return that list as elements
-                //but only if the search input is still focused
-                if (searchIsFocused)
-                {
-                    const listElements = list.map((item) => {
-                        return <li className="cooking-item-search-item" key={item.name}>
-                            <div className="cooking-item-search-method" data-name={item.name}>{item.method ?? ''}</div>
-                            <div className="cooking-item-search-name" data-name={item.name}>{item.name}</div>
-                        </li>
-                    })
-
-                    return listElements
-                }
-                else{
-                    return <p>Hiding list. Click Item Search to show.</p>
-                }
-            }
-            else
-            {
-                return <p>No results...</p>
-            }
-        }
-        else{
-            return <p>Search Field is empty</p>
-        }
-        //  This shouldn't ever display but just incase
-        return <h1>Item Search placeholder</h1>
     }
 
     //  This is the main dish selected
@@ -399,8 +355,6 @@ export default function Cooking(){
         return finalElement
     }
 
-    
-
     return (
         <div className="cooking-page">
             <div className="container">
@@ -426,12 +380,13 @@ export default function Cooking(){
                         onChange={(e) => handleSearchInput(e.target.value)}
                     />
 
-                    <ul className="cooking-item-search-list">
-                        {renderItemSearchList()}
-                    </ul>
+                    <SearchList 
+                        searchInput={itemSearch} 
+                        searchIsFocused={searchIsFocused}
+                        byNameIsChecked={byNameIsChecked}
+                    />
                 </div>
 
-                
                 {renderMainDish(mainItem)}
 
                 {/* {console.log("Here is the full tree",recipeTree)} */}
