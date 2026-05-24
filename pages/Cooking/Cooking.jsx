@@ -59,7 +59,7 @@ export default function Cooking(){
             // Check for instances of other recipes
             
             let recipeCounter = 0
-
+            recipe["name"] = itemObj.name
             recipe["selected"] = selected
 
             if (itemObj.recipe.recipe1){
@@ -84,7 +84,7 @@ export default function Cooking(){
             }
             recipe["hasMultiple"] = recipeCounter > 1 ? true: false
             recipe["nested"] = []
-            recipe["name"] = itemObj.name
+            
 
             // console.log(itemObj.recipe[selected])
 
@@ -122,14 +122,14 @@ export default function Cooking(){
         else if(typeof itemObj === "string")
         {
             console.warn("Could not find ITEM in data: ", itemObj)
-            recipe["hasMultiple"] = false
             recipe["name"] = itemObj
+            recipe["hasMultiple"] = false
             return recipe
         }
         else{ //    If object doesn't have recipe property
             // console.log(`Item does not have recipe property: `, itemObj)
-            recipe["hasMultiple"] = false
             recipe["name"] = itemObj?.name ? itemObj.name : "UNDEFINED ITEM"
+            recipe["hasMultiple"] = false
             return recipe
         }
     }
@@ -355,6 +355,102 @@ export default function Cooking(){
         return finalElement
     }
 
+    //  Go through an object's recipe tree and return an array of objects to use later
+    function instructionsArr(recipeTree, currentDepth = 0){
+        const instructions = []
+
+        console.log("depth:", currentDepth, "Calling instructionsArr", recipeTree)
+
+        //  If looking through a Recipe Tree
+        if (recipeTree)
+        {
+            //If looking through an array
+            if (Array.isArray(recipeTree)){
+                //  Encountering a problem
+                
+                
+                //go through array and
+                //tf do I do uhh 
+                const something1 = recipeTree.map(item => {
+                    console.log("something1", item)
+                    //  I need to be able to tell the difference between a recipeTree.nested and an instructionsArr
+                    if (Object.hasOwn(item, "hasMultiple")){
+                        console.log("recipeTree.nested", item)
+                        if (item.nested){
+                            console.log("Thats nested bro push that rizz in", item)
+                            // If this has nested properties need to push instructions
+                            // instructions.push({
+                            //     name: item.name,
+                            //     push: item.method ?? getMethodByName(item.name),
+                            //     depthOccurances: [currentDepth+1]
+                            // })
+
+                            //Ok so I HAVE to recursively go through from here
+                            //do i just... call it on the item?
+                            console.log("I need to do something recursive here")
+                            instructions.push(...instructionsArr(item, currentDepth+1))
+                        }
+                        
+                    }
+                    // NOTE: is this even working?
+                    else if (Object.hasOwn(item, "depthOccurances")){
+                        console.log("depthOccurances", item)
+                    }
+                    
+                })
+            }
+            else if (recipeTree.nested){
+
+                // So.... I have to go through the nested property right? recursively
+                const thatNestedThang = instructionsArr(recipeTree.nested, currentDepth)
+                console.log("nested thang", thatNestedThang)
+                if (thatNestedThang.length > 0)
+                {
+                    console.log("Push thatNestedThang")
+                    // Nestedthang is an array so... flatten it
+                    instructions.push(...thatNestedThang)
+                }
+                else{
+                    console.log("ayy lmao nothing in thatNestedThang")
+                }
+                
+                //  Check if the recipe is in instructions already.
+                //  NOTE: This looks like it might be hilariously unoptimized...
+                // honestly hang on donn't bther checking if its already in the array of objects maybe do that afterwards at end of logic
+
+                // Old block of code
+                // if (instructions.includes(item =>
+                //     item.name === recipeTree.name
+                // ))
+                // {
+                //     //  push current depth to depth occurances to keep track
+                //     instructions.find(obj => obj.name === recipeTree.name).depthOccurances.push(currentDepth)
+                // }
+                // //  Not existing
+                // else{
+                //     //  Push new objects to array
+                //     instructions.push({
+                //         name: recipeTree.name,
+                //         // using this to find method cause recipe tree does not have method prop
+                //         method: recipeTree.method ?? getMethodByName(recipeTree.name), 
+                //         depthOccurances: [currentDepth],
+                //     })
+                // }
+
+                // New block
+                //  Push new objects to array
+                instructions.push({
+                    name: recipeTree.name,
+                    // using this to find method cause recipe tree does not have method prop
+                    method: recipeTree.method ?? getMethodByName(recipeTree.name), 
+                    depthOccurances: [currentDepth],
+                })
+            }
+        }
+        console.log("returning arr", instructions)
+        return instructions
+    }
+
     return (
         <div className="cooking-page">
             <div className="container">
@@ -395,7 +491,7 @@ export default function Cooking(){
                 {renderIngredientTree(recipeTree)}
 
                 {/* {getBaseIngredientsFromRecipeTree(recipeTree)} */}
-                
+                {console.log(instructionsArr(recipeTree))}
             </div>
         </div>
     )
