@@ -52,6 +52,8 @@ export default function Cooking(){
         setRecipeTree(getRecipeTree(itemObj))
     }
 
+    //  I think I'm gonna need an Update RecipeTree function???
+    //  Maybe adding another function to pass in the old recipe tree to compare to could work? no idea
     function getRecipeTree(itemObj, selected = "recipe1"){
         const recipe = {}
         // if recipe property exists
@@ -146,6 +148,12 @@ export default function Cooking(){
         setItemSearch(value)
     }
 
+    function setMainSelectedRecipe(value){
+        //setRecipeTree({...recipeTree, selected: value})
+        //does this not update th other things
+        setRecipeTree(getRecipeTree(mainItem, value))
+    }
+
     //  This is the main dish selected
     function renderMainDish(item){
         if (item){
@@ -162,11 +170,11 @@ export default function Cooking(){
 
                 {hasMultipleRecipes ? <p>This item has multiple known recipes</p> : null}
                 {hasMultipleRecipes ? <p className='cooking-main-item-recipes'>
-                    {item.recipe?.ingame ? <span>In-game</span> : null}
-                    {item.recipe?.recipe1 ? <span>1</span> : null}
-                    {item.recipe?.recipe2 ? <span>2</span> : null}
-                    {item.recipe?.recipe3 ? <span>3</span> : null}
-                    {item.recipe?.recipe4 ? <span>4</span> : null}
+                    {item.recipe?.ingame ? <span className={recipeTree.selected === "ingame" ? "selected" : ""} onClick={() => setMainSelectedRecipe("ingame")}>In-game</span> : null}
+                    {item.recipe?.recipe1 ? <span className={recipeTree.selected === "recipe1" ? "selected" : ""} onClick={() => setMainSelectedRecipe("recipe1")}>1</span> : null}
+                    {item.recipe?.recipe2 ? <span className={recipeTree.selected === "recipe2" ? "selected" : ""} onClick={() => setMainSelectedRecipe("recipe2")}>2</span> : null}
+                    {item.recipe?.recipe3 ? <span className={recipeTree.selected === "recipe3" ? "selected" : ""} onClick={() => setMainSelectedRecipe("recipe3")}>3</span> : null}
+                    {item.recipe?.recipe4 ? <span className={recipeTree.selected === "recipe4" ? "selected" : ""} onClick={() => setMainSelectedRecipe("recipe4")}>4</span> : null}
                     </p> : null}
 
                 {item.recipe ? renderMainRecipe(): null}
@@ -513,18 +521,22 @@ export default function Cooking(){
         }
 
         const content = instructionsArr.map(({name, method, depthOccurances}) => {
-            return <li>yo {method} {depthOccurances.length}x of deez {name} nuts</li>
+            return <li>{method} {depthOccurances.length} {name}</li>
         })
 
         return (
             <div className='cooking-instructions'>
-                <h2>let him COOK Instruction for dat <span>{mainItem.name}</span></h2>
-                <p className="italic">*note: non-cooking methods like milling/gathering/purchase are not supported yet</p>
-                <p>get all dem Base Ingredients ready G and then heres the sauce</p>
+                <h2>Cooking Instructions</h2>
+                <p className="italic">*note: non-cooking skill methods like milling/gathering/purchase are not supported yet</p>
+                <h3>{mainItem.name}</h3>
+                <p>Grab all base ingredients before starting</p>
+                
+                
+                <p>Steps:</p>
                 <ol>
                     {content}
                 </ol>
-                <p>now THAT is fyne azz {mainItem.name} MY MAN</p>
+                {/* <p>{mainItem.name} MY MAN</p> */}
             </div>
         )
     }

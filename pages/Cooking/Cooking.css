@@ -55,6 +55,7 @@
 
 .cooking-main-item-content,
 .cooking-base-ingredients,
+.cooking-instructions,
 .recipe-tree{
     border: 2px solid hotpink;
     padding: 1em;
@@ -77,9 +78,15 @@
     min-width: 14px;
 }
 
+.cooking-main-item-recipes span.selected{
+    color:white;
+    background-color: hotpink;
+    border-color: hotpink;
+}
+
 .cooking-main-item-recipes span:hover{
     cursor: pointer;
-    background-color: lightpink;
+    background-color: pink;
 }
 
 input#item-search{
