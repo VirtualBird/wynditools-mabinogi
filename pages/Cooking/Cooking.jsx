@@ -150,12 +150,27 @@ export default function Cooking(){
     function renderMainDish(item){
         if (item){
 
+            let itemCurrency = item?.priceCurrency ? ` ${item?.priceCurrency}` : "g"
+
+            const hasMultipleRecipes = Object.keys(item.recipe ?? {}).length > 1 ? true : false
+            const hasRecipeAndPrice = null
+
             return <div className="cooking-main-item-content">
                 <h2>Main Item</h2>
                 {item.name ? <h3>{item.name}</h3> : <h2>Undefined Item Name</h2>}
                 {item.method ? <p>{`${item.method} (${getCookingRankByMethod(item.method)} Cooking)`}</p> : null}
-                {Object.keys(item.recipe ?? {}).length > 1 ? <p>This item has multiple known recipes</p> : null}
+
+                {hasMultipleRecipes ? <p>This item has multiple known recipes</p> : null}
+                {hasMultipleRecipes ? <p className='cooking-main-item-recipes'>
+                    {item.recipe?.ingame ? <span>In-game</span> : null}
+                    {item.recipe?.recipe1 ? <span>1</span> : null}
+                    {item.recipe?.recipe2 ? <span>2</span> : null}
+                    {item.recipe?.recipe3 ? <span>3</span> : null}
+                    {item.recipe?.recipe4 ? <span>4</span> : null}
+                    </p> : null}
+
                 {item.recipe ? renderMainRecipe(): null}
+                {item.purchase ?? '' ? <p>Purchase from: {item.purchase.join(", ")} ({item.price ?? 'PRICE MISSING'}{itemCurrency})</p> : null}
             </div>
         }
         else{
@@ -447,8 +462,71 @@ export default function Cooking(){
                 })
             }
         }
-        console.log("returning arr", instructions)
+        console.log("instructionsArr returning arr", instructions)
         return instructions
+    }
+
+    //  Might be a better name for this
+    //  Actually this could be global util...? Maybe...
+    function instructionsArrCompact(objectsArr){
+        const compactArr = objectsArr.reduce((acc, curr) => {
+            console.log("comp", curr)
+            const that = acc.find(item => item.name === curr.name)
+
+            if (that){
+                that.depthOccurances.push(...curr.depthOccurances)
+            }
+            else{   //  Maybe be careful with push(curr) its technically pushing by reference and not by value
+                acc.push(curr)
+            }
+
+            return acc
+
+        }, [])
+
+        return compactArr
+    }
+
+    //  Sorts descending order
+    function instSortHighestDepth(objectsArr){
+        const sortedArr = objectsArr.sort((a, b) => Math.max(...b.depthOccurances) - Math.max(...a.depthOccurances) )
+        console.log("get sorted idiot", sortedArr)
+        return sortedArr
+    }
+    //umm.... we are just gonna use the recipe tree as parameter
+    function getCookingInstructionsByRecipeTree(recipeTree){
+        const rawInstructionsArr = instructionsArr(recipeTree)
+        const compactInstructionsArr = instructionsArrCompact(rawInstructionsArr)
+        const sortedInstructionsArr = instSortHighestDepth(compactInstructionsArr)
+
+        return sortedInstructionsArr
+    }
+
+    
+    function renderCookingInstructions(recipeTree){
+        const instructionsArr = getCookingInstructionsByRecipeTree(recipeTree)
+
+        if (instructionsArr.length === 0)
+        {
+            console.log("ayy mate you sending NOTHIN haha")
+            return null
+        }
+
+        const content = instructionsArr.map(({name, method, depthOccurances}) => {
+            return <li>yo {method} {depthOccurances.length}x of deez {name} nuts</li>
+        })
+
+        return (
+            <div className='cooking-instructions'>
+                <h2>let him COOK Instruction for dat <span>{mainItem.name}</span></h2>
+                <p className="italic">*note: non-cooking methods like milling/gathering/purchase are not supported yet</p>
+                <p>get all dem Base Ingredients ready G and then heres the sauce</p>
+                <ol>
+                    {content}
+                </ol>
+                <p>now THAT is fyne azz {mainItem.name} MY MAN</p>
+            </div>
+        )
     }
 
     return (
@@ -488,10 +566,12 @@ export default function Cooking(){
                 {/* {console.log("Here is the full tree",recipeTree)} */}
                 {recipeTree && renderBaseIngredients((countBaseIngredients(getBaseIngredientsFromRecipeTree(recipeTree))))}
 
+                {renderCookingInstructions(recipeTree)}
+
                 {renderIngredientTree(recipeTree)}
 
                 {/* {getBaseIngredientsFromRecipeTree(recipeTree)} */}
-                {console.log(instructionsArr(recipeTree))}
+                
             </div>
         </div>
     )

@@ -62,6 +62,26 @@
     margin-block: 1em;
 }
 
+.cooking-main-item-recipes{
+    margin-block: 0.5em;
+    display: flex;
+    gap: 0.5em;
+}
+
+.cooking-main-item-recipes span{
+    border-radius: 999px;
+    display: inline-block;
+    text-align: center;
+    border: 1px solid pink;
+    padding: 0.25rem 0.5rem;
+    min-width: 14px;
+}
+
+.cooking-main-item-recipes span:hover{
+    cursor: pointer;
+    background-color: lightpink;
+}
+
 input#item-search{
     margin-left: 4px;
     border: 2px solid hotpink;
