@@ -76,13 +76,13 @@ export default function Wine_Making(){
                 </div>
 
                 <div className="score-details">
-                    <p>Minimum score requirements</p>
+                    <p>Wine score requirements</p>
                     <ul>
                         <li style={{ opacity: scoreIsAboveValue(60000) ? "1" : "0.3"}}>60000</li>
                         <li style={{ opacity: scoreIsAboveValue(120000) ? "1" : "0.3"}}>120000</li>
                         <li style={{ opacity: scoreIsAboveValue(160000) ? "1" : "0.3"}}>160000</li>
                     </ul>
-                    <p>Minimum of 60,000 score is required for Glyph Lore <span>Rank 3</span> and <span>Rank 2</span></p>
+                    <p>A minimum of 60,000 score is required for Glyph Lore <span>Rank 3</span> and <span>Rank 2</span></p>
                 </div>
 
                 <div className="sources">

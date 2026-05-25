@@ -1,16 +1,32 @@
 :root{
+  --color-primary-darker: #ff0081;
+  --color-primary-dark: #ff48a5;
   --color-primary: #ff6fbd;
+  --color-primary-light: #ffaed7;
+  --color-primary-lighter: #ffcae5;
+  --header-height: 50px;
 }
-
 
 body {
   margin: 0;
   font-family: Inter, Arial, Helvetica, sans-serif;
+  color: #333333;
 }
 
 header{
-  margin: 8px;
+
+  /* margin: 8px; */
+  position: fixed;
+  display: flex;
+  align-items: center;
+  padding: 4px;
   text-decoration: none;
+  background-color: #fefefe;
+  box-shadow: 0 0 4px 0px #00000037;
+  width: 100%;
+  /* outline: 2px solid red; */
+  top: 0;
+  left: 0;
 }
 
 header a{
@@ -18,25 +34,54 @@ header a{
 }
 
 header h1{
+  font-size: 1.2em;
   display: inline-block;
   position: relative;
   margin: 8px;
   color: var(--color-primary);
+  text-shadow: 0px 1px 2px rgb(00, 00, 00, 0.15);
+
+  transition: color 0.1s;
 
     &:hover{
-      color: #f885c4;
+      color: var(--color-primary-light);
+      transition: color 0.1s;
     }
 
     &:active{
-      color: #ac1066;
-    }
-    
-    &:focus{
-      color: #ff9dd3;
+      color: var(--color-primary-dark);
+      transition: color 0.1s;
     }
 }
 
+.menu-btn{
+  /* align-items: center; */
+  width: 42px;
+  height: 42px;
 
+  border: 2px solid #ffffff00;
+  border-radius: 4px;
+  cursor: pointer;
+
+  background-color: #ffffff00;
+}
+
+.menu-btn img{
+  display: block;
+}
+
+.menu-btn:hover{
+  background-color: #eeeeee;
+  /* border-color: lightpink; */
+}
+
+.menu-btn:focus{
+  border-color: var(--color-primary);
+}
+
+main{
+  margin-top: var(--header-height);
+}
 
 h1 {
   margin:0;
@@ -86,7 +131,6 @@ ul{
   text-decoration: none;
   color:darkblue;
 }
-
 
 .not-found-page
 {
