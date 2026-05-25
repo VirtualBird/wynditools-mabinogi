@@ -26,14 +26,14 @@ export default function Wine_Making(){
         return score
     }
 
+    function scoreIsAboveValue(value){
+        return calculateWineScore() > value
+    }
+
     // Handle changes to slider and updates Wine state's values
     function handleChange(event){
         console.log("slider value changed")
-        const {value, name} = event.currentTarget
-        // console.log(name)
-        // console.log("Updating State: " + value)
-        // console.log("Previous State: " + wine[name])
-
+        const {name, value} = event.currentTarget
         setWine(prevValues => ({...prevValues, [name]: (value)}))
     }
 
@@ -42,37 +42,49 @@ export default function Wine_Making(){
             <div className="container">
 
                 <h1>Wine Making Calculator</h1>
-                <Slider name="acidity" 
+                <Slider 
+                    name="acidity" 
+                    value={wine.acidity} handleChange={(e) => handleChange(e)}
                     tooltip="Acidity decreases if the player takes too long in the oak barrel replacement." 
-                    value={wine.acidity} handleChange={(e) => handleChange(e)}/>
-                <Slider name="purity" 
+                />
+                <Slider 
+                    name="purity"
+                    value={wine.purity} handleChange={handleChange}
                     tooltip="Purity decreases if too many sediments are not taken out in the oak barrel replacement." 
-                    value={wine.purity} handleChange={handleChange}/>
-                <Slider name="freshness" 
+                />
+                <Slider 
+                    name="freshness" 
+                    value={wine.freshness} handleChange={handleChange}
                     tooltip="Freshness decreases if the player neglects to replace the oak barrel after 24 real-time hours, decaying by 1 point every 36 minutes after the 24 hour mark." 
-                    value={wine.freshness} handleChange={handleChange}/>
-                <Slider name="age" 
+                />
+                <Slider 
+                    name="age"
+                    value={wine.age} handleChange={handleChange}
                     tooltip="Age slowly increases over time at a rate of approximately 1 age every 2.8 in-game days (or 1 hour, 40 minutes and 48 seconds real-time), and reaches maximum after exactly 280 in-game days (or one real-time week)." 
-                    value={wine.age} handleChange={handleChange}/>
+                />
 
                 <div className="wine-score">
                     <h2>Score</h2>
-                    <Tooltip maxWidth={500} content={<><p>Score is calculated using the following formula</p>
-                        <p className="italic formula-text">Score = (Purity+Acidity+Freshness+Age) * (lowest value between Purity, Acidity, Freshness, and Age) * 5</p></>}>
-                    <div className="wine-score-value">
-                        {calculateWineScore()}
-                    </div>
+                    <Tooltip maxWidth={500} content={<>
+                        <p>Score is calculated using the following formula</p>
+                        <p className="italic formula-text">Score = (Purity+Acidity+Freshness+Age) * (lowest value between Purity, Acidity, Freshness, and Age) * 5</p>
+                        </>}>
+                        <div className="wine-score-value">
+                            {calculateWineScore()}
+                        </div>
                     </Tooltip>
                 </div>
+
                 <div className="score-details">
                     <p>Minimum score requirements</p>
                     <ul>
-                        <li>60000</li>
-                        <li>120000</li>
-                        <li>160000</li>
+                        <li style={{ opacity: scoreIsAboveValue(60000) ? "1" : "0.3"}}>60000</li>
+                        <li style={{ opacity: scoreIsAboveValue(120000) ? "1" : "0.3"}}>120000</li>
+                        <li style={{ opacity: scoreIsAboveValue(160000) ? "1" : "0.3"}}>160000</li>
                     </ul>
-                    <p>Minimum of 60,000 score is required for Glyph Lore Rank 3 and Rank 2</p>
+                    <p>Minimum of 60,000 score is required for Glyph Lore <span>Rank 3</span> and <span>Rank 2</span></p>
                 </div>
+
                 <div className="sources">
                     <p>Mabinogi Wiki Pages</p>
                     <p>
@@ -80,8 +92,8 @@ export default function Wine_Making(){
                         <a href="https://wiki.mabinogiworld.com/view/Pencast#Wine_Making_Rewards" target="_blank">Pencast Wine Making Rewards</a>
                     </p>
                 </div>
+
             </div>
         </div>
-        
     )
 }

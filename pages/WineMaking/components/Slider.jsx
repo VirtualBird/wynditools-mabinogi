@@ -1,12 +1,10 @@
 import React from "react"
-import "./Slider.css"
-
 import Tooltip from "../../../components/Tooltip/Tooltip"
+import "./Slider.css"
 
 export default function Slider({name, value, handleChange, tooltip}){
 
     // Perhaps add code to disable text selection when dragging?
-
     return (
         <div className="slider-container">
             {tooltip ? 

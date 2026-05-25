@@ -1,3 +1,8 @@
+:root{
+  --color-primary: #ff6fbd;
+}
+
+
 body {
   margin: 0;
   font-family: Inter, Arial, Helvetica, sans-serif;
@@ -16,10 +21,10 @@ header h1{
   display: inline-block;
   position: relative;
   margin: 8px;
-  color: #ff44aa;
+  color: var(--color-primary);
 
     &:hover{
-      color: #ff66bb;
+      color: #f885c4;
     }
 
     &:active{
@@ -41,6 +46,11 @@ footer{
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
+}
+
+ul{
+  list-style: none;
+  padding: 0;
 }
 
 .italic{

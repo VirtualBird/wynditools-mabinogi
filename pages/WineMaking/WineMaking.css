@@ -1,9 +1,9 @@
-.wine-making-page h1{
-    margin-block: 22px;
-}
-
 .wine-making-page{
     text-align: center;
+}
+
+.wine-making-page h1{
+    margin-block: 1em;
 }
 
 .wine-score{
@@ -14,15 +14,19 @@
 
 .wine-score-value{
     text-align: center;
-    padding: 5px 5px;
-    font-size: 30px;
+    padding: 4px 4px;
+    font-size: 1.875rem;
     border: 2px solid #555555;
     border-radius: 10px;
     width: 120px;
 }
 
 .score-details{
-    margin-top: 50px;
+    margin-top: 40px;
+}
+
+.score-details span{
+    font-weight: bold;
 }
 
 .sources{
@@ -36,11 +40,6 @@
 
 .sources a{
     margin: 0px 4px; 
-}
-
-ul{
-    list-style: none;
-    padding: 0;
 }
 
 .formula-text{
