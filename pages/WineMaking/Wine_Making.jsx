@@ -42,6 +42,8 @@ export default function Wine_Making(){
             <div className="container">
 
                 <h1>Wine Making Calculator</h1>
+                <p>Click and hold to drag the sliders to calculate your Wine's score.</p>
+                
                 <Slider 
                     name="acidity" 
                     value={wine.acidity} handleChange={(e) => handleChange(e)}
@@ -62,17 +64,17 @@ export default function Wine_Making(){
                     value={wine.age} handleChange={handleChange}
                     tooltip="Age slowly increases over time at a rate of approximately 1 age every 2.8 in-game days (or 1 hour, 40 minutes and 48 seconds real-time), and reaches maximum after exactly 280 in-game days (or one real-time week)." 
                 />
-
+                <p>You can hover hover the name of the attribute for more details</p>
                 <div className="wine-score">
-                    <h2>Score</h2>
-                    <Tooltip maxWidth={500} content={<>
+                    <h2>Score <Tooltip maxWidth={500} content={<>
                         <p>Score is calculated using the following formula</p>
                         <p className="italic formula-text">Score = (Purity+Acidity+Freshness+Age) * (lowest value between Purity, Acidity, Freshness, and Age) * 5</p>
-                        </>}>
+                        </>}>(?)</Tooltip></h2>
+                    
                         <div className="wine-score-value">
                             {calculateWineScore()}
                         </div>
-                    </Tooltip>
+                    
                 </div>
 
                 <div className="score-details">

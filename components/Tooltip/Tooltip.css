@@ -2,6 +2,7 @@
     position: relative;
     display: inline-block;
     border-bottom: 1px dotted hotpink;
+    font-weight:initial;
 }
 
 .tooltip .tooltip-body {
@@ -15,6 +16,9 @@
     max-width: 280px;
     border-radius: 8px;
     padding: 16px;
+    font-size: 1rem;
+    
+    
 }
 
 .tooltip .tooltip-body:after {

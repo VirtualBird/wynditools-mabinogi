@@ -18,7 +18,14 @@ export default function Home(){
             <Link to="cooking" className="tile-container">
                 Cooking (under construction)
             </Link>
-
+            <div className="external-links">
+                <p>
+                    <a href="https://www.nexon.com/mabinogi/" target="_blank">Official Mabinogi NA Site</a>
+                </p>
+                <p>
+                    <a href="https://wiki.mabinogiworld.com/" target="_blank">Mabinogi World Wiki (NA Wiki)</a>
+                </p>
+            </div>
         </div>
     )
 }

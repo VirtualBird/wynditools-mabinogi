@@ -136,3 +136,23 @@ ul{
 {
   text-align: center;
 }
+
+main > div{
+  margin-top: 4em;
+}
+
+.external-links{
+  margin-top: 2em;
+  display: flex;
+  font-size: .8em;
+  gap: 16px;
+}
+
+.external-links a{
+  text-decoration: none;
+  color: #999999;
+
+  &:hover{
+    color:#333333;
+  }
+}
