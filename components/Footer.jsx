@@ -3,7 +3,7 @@ import React from "react"
 export default function Footer(){
     return (
         <footer>
-            <p>Made by Wyndia from Mabinogi</p>
+            <p>Made by milletian <span>Wyndia</span></p>
         </footer>
     )
 }
