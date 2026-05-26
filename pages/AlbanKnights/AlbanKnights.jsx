@@ -249,7 +249,7 @@ export default function(){
                 </div>
 
                 <p>Click on an item in the list to add them to the slot.</p>
-                <p>Stones in the list will fade out if it is not possible to get reach the set target tier.</p>
+                <p>Stones in the list will fade out if it is not possible to reach the set target tier.</p>
                 <div className="stones-container">
                     <div className="yellow-container">
                         <p className="stone-active-value">{yellow?.value ? yellow.value : 0}</p>
