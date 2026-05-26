@@ -110,19 +110,21 @@ ul{
   align-content: center;
   height: 100px;
   width: min(600px, 90%);
-  border: 2px solid black;
-  border-radius: 10px;
+  border: 2px solid lightgray;
+  border-radius: 4px;
   transition: border-color 0.3s;
 
-  &:hover{
+  
+  text-decoration: none;
+  color:#333333;
+
+
+  
+
+  /* &:hover{
       border-color: #ff44aa;
       transition: border-color 0.3s;
-    }
-}
-
-.tile-container{
-  text-decoration: none;
-  color:darkblue;
+    } */
 }
 
 .not-found-page{
@@ -156,9 +158,7 @@ main > div{
   grid-template-rows: 1fr auto;
 }
 
-
 /* Custome Button styling */
-
 .style-btn-cute{
     cursor:pointer;
     transition: border 0.4s, background-color 0.1s;
