@@ -155,3 +155,22 @@ main > div{
   display: grid;
   grid-template-rows: 1fr auto;
 }
+
+
+/* Custome Button styling */
+
+.style-btn-cute{
+    cursor:pointer;
+    transition: border 0.4s, background-color 0.1s;
+
+    &:hover{
+        border-color: var(--color-primary);
+        background-color: var(--color-primary-lighter);
+        transition: border 0.2s;
+    } 
+
+    &.selected{
+      color: var(--color-primary-darker);
+      border-color: var(--color-primary);
+    }
+}

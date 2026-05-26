@@ -10,6 +10,8 @@ export default function(){
     const [gray, setGray] = React.useState(null)
     const [blue, setBlue] = React.useState(null)
 
+    const [targetScore, setTargetScore] = React.useState(0)
+
     function getStoneByName(name)
     {
         const stone = stonesData.find(stone => stone.name === name)
@@ -110,8 +112,11 @@ export default function(){
             }
 
             // And I need some keys here
+            const meetsScoreReq = isTargetScorePossibleWithStone(stone)
+            //want to add something t check current slotted stone
+            // const currentlySlotted = 
 
-            return <li className="stone-item" onClick={() => addStone(stone)}>
+            return <li className={`stone-item ${meetsScoreReq ? "" : "fade"}`} onClick={() => addStone(stone)}>
                 <div className={`stone-value ${plusminusClass}`}>{plusminusClass === "positive" ? "+":null}{stone.value}</div> 
                 <div className="stone-name">{stone.name}</div>
                 </li>
@@ -143,39 +148,108 @@ export default function(){
         }
     }
 
+    function isTargetScorePossibleWithStone(stone){
+
+        if (!targetScore){
+            return true
+        }
+
+        const {value, color} = stone
+        // NOTE: hardcoded value
+        const highestStones = {
+            yellow: 130,
+            red: 0,
+            green: 45,
+            gray: 45,
+        }
+
+        //use slotted stones as value if they exist
+        if (yellow){
+            highestStones.yellow = yellow.value
+        }
+        if (red){
+            highestStones.red = red.value
+        }
+        if (green){
+            highestStones.green = green.value
+        }
+        if (gray){
+            highestStones.gray = gray.value
+        }
+
+        if (color === "yellow"){
+            highestStones.yellow = value
+        }
+        if (color === "red"){
+            highestStones.red = value
+        }
+        if (color === "green"){
+            highestStones.green = value
+        }
+        if (color === "gray"){
+            highestStones.gray = value
+        }
+
+        const selectValue = highestStones.red + highestStones.yellow + highestStones.green + highestStones.gray
+
+        if (selectValue >= targetScore){
+            return true
+        }
+
+        return false
+    }
+
     return (
         <div className="alban-knights-page">
             <div className="container">
                 <h1>Alban Knights Training Stone Calculator</h1>
 
                 <div>
-                    <h3>Score Thresholds</h3>
-                    <ul>
+                    <h3>Select Target Reward Tier</h3>
+                    <ul className="alban-target-score-wrapper">
                         <li>
-                            SS 190+
+                            <button className={`style-btn-cute ${targetScore >= 190 ? "selected" : null}`} onClick={()=>setTargetScore(190)}>
+                                <span className="alban-target-rank">SS</span>
+                                <span>190+</span>
+                            </button>
                         </li>
                         <li>
-                            
-                            S 130+
+                            <button className={`style-btn-cute ${targetScore === 130 ? "selected" : null}`} onClick={()=>setTargetScore(130)}>
+                                <span className="alban-target-rank">S</span>
+                                <span>130+</span>
+                            </button>
                         </li>
                         <li>
-                            A 100+
+                            <button className={`style-btn-cute ${targetScore === 100 ? "selected" : null}`} onClick={()=>setTargetScore(100)}>
+                                <span className="alban-target-rank">A</span>
+                                <span>100+</span>
+                            </button>
                         </li>
                         <li>
-                            B 70+
+                            <button className={`style-btn-cute ${targetScore === 70 ? "selected" : null}`} onClick={()=>setTargetScore(70)}>
+                                <span className="alban-target-rank">B</span>
+                                <span>70+</span>
+                            </button>
                         </li>
                         <li>
-                            C Below 70
+                            <button className={`style-btn-cute ${targetScore < 70 ? "selected" : null}`} onClick={()=>setTargetScore(0)}>
+                                <span className="alban-target-rank">C</span>
+                                <span>0-69</span>
+                            </button>
                         </li>
                     </ul>
                 </div>
 
-                <div>
-                    <h2>{getTier(addAll())}</h2>
-                    <h2>{addAll()}</h2>
+                <div className="alban-knights-reward-container">
+                    <h3>Current Alban Knights Reward Tier</h3>
+                    <div>
+                        <h2>{getTier(addAll())}</h2>
+                        <h3>{addAll()}</h3>
+                    </div>
                 </div>
 
                 <p>Click on an item in the list to add them to the slot.</p>
+                <p>Stones in the list will fade out if it is not possible to get reach the set target tier.</p>
                 <div className="stones-container">
                     <div className="yellow-container">
                         <p className="stone-active-value">{yellow?.value ? yellow.value : 0}</p>

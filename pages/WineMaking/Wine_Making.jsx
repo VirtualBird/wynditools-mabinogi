@@ -64,7 +64,7 @@ export default function Wine_Making(){
                     value={wine.age} handleChange={handleChange}
                     tooltip="Age slowly increases over time at a rate of approximately 1 age every 2.8 in-game days (or 1 hour, 40 minutes and 48 seconds real-time), and reaches maximum after exactly 280 in-game days (or one real-time week)." 
                 />
-                <p>You can hover hover the name of the attribute for more details</p>
+                <p>You can hover over the name of the attribute for more details</p>
                 <div className="wine-score">
                     <h2>Score <Tooltip maxWidth={500} content={<>
                         <p>Score is calculated using the following formula</p>

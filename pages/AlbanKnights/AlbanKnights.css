@@ -6,7 +6,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    margin-top: 2em;
+    /* margin-top: 2em; */
     margin-left: auto;
     margin-right: auto;
     /* width: auto; */
@@ -23,6 +23,10 @@
 
 .stone-item{
     display: flex;
+}
+
+.stone-item.fade{
+    opacity: 0.2;
 }
 
 .stone-name{
@@ -66,7 +70,11 @@
     transition: background-color 0.2s;
 }
 
+.stone-active-value,
+.stone-active-slot{
 
+    font-weight: 600;
+}
 
 .stone-value.positive{
     color: green;
@@ -97,4 +105,51 @@
     background-color: lightpink;
     border-color: red;
     transition: background-color 0.1s;
+}
+
+.alban-target-score-wrapper{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+}
+
+.alban-target-score-wrapper span{
+    display: block;
+}
+
+.alban-target-score-wrapper li{
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* flex: 1 1 0; */
+}
+
+.alban-target-score-wrapper button{
+    /* Uhh this width isn't responsive design friendly idk how to fix*/
+    width: 80px;
+    border: 2px solid #eeeeee;
+    background-color: white;
+}
+
+
+span.alban-target-rank{
+    font-size: 1.5rem;
+}
+
+.alban-knights-reward-container div{
+    border: 2px solid black;
+    border-radius: 8px;
+    margin-inline: auto;
+    width: 100px;
+}
+
+.alban-knights-reward-container > div{
+    h2{
+        font-size: 2rem;
+        margin-block: 1rem;
+    }
+
+    h3{
+        font-size: 1.5rem;
+        margin-block: 1rem;
+    }
 }

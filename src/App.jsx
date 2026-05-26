@@ -11,7 +11,6 @@ import NotFound from '../pages/NotFound'
 
 import MainLayout from "../components/MainLayout"
 
-
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'

@@ -337,21 +337,21 @@ export const albanKnightStonesData = [
         modifierName:"Party Gathering Speed",
         modifierEffect:"105%",
         color: "green",
-        value: 20,
+        value: -10,
     },
     {   
         get name() {return this.modifierName + ": " +this.modifierEffect},
         modifierName:"Party Gathering Speed",
         modifierEffect:"108%",
         color: "green",
-        value: 10,
+        value: -15,
     },
     {   
         get name() {return this.modifierName + ": " +this.modifierEffect},
         modifierName:"Party Gathering Speed",
         modifierEffect:"112%",
         color: "green",
-        value: -10,
+        value: -20,
     },
 
     // Need to add the other green training stones in here they're all -30
