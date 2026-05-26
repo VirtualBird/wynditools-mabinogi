@@ -72,7 +72,6 @@
 
 .stone-active-value,
 .stone-active-slot{
-
     font-weight: 600;
 }
 
@@ -117,19 +116,12 @@
     display: block;
 }
 
-.alban-target-score-wrapper li{
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* flex: 1 1 0; */
-}
-
 .alban-target-score-wrapper button{
     /* Uhh this width isn't responsive design friendly idk how to fix*/
     width: 80px;
     border: 2px solid #eeeeee;
     background-color: white;
 }
-
 
 span.alban-target-rank{
     font-size: 1.5rem;
