@@ -14,8 +14,6 @@ body {
 }
 
 header{
-
-  /* margin: 8px; */
   position: fixed;
   display: flex;
   align-items: center;
@@ -24,9 +22,9 @@ header{
   background-color: #fefefe;
   box-shadow: 0 0 4px 0px #00000037;
   width: 100%;
-  /* outline: 2px solid red; */
   top: 0;
   left: 0;
+  /* height: var(--header-height); */
 }
 
 header a{
@@ -55,7 +53,6 @@ header h1{
 }
 
 .menu-btn{
-  /* align-items: center; */
   width: 42px;
   height: 42px;
 
@@ -72,7 +69,6 @@ header h1{
 
 .menu-btn:hover{
   background-color: #eeeeee;
-  /* border-color: lightpink; */
 }
 
 .menu-btn:focus{
@@ -88,7 +84,6 @@ h1 {
 }
 
 footer{
-  margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
@@ -114,7 +109,7 @@ ul{
   text-align: center;
   align-content: center;
   height: 100px;
-  width: 400px;
+  width: min(600px, 90%);
   border: 2px solid black;
   border-radius: 10px;
   transition: border-color 0.3s;
@@ -123,8 +118,6 @@ ul{
       border-color: #ff44aa;
       transition: border-color 0.3s;
     }
-
-    
 }
 
 .tile-container{
@@ -132,8 +125,7 @@ ul{
   color:darkblue;
 }
 
-.not-found-page
-{
+.not-found-page{
   text-align: center;
 }
 
@@ -155,4 +147,11 @@ main > div{
   &:hover{
     color:#333333;
   }
+}
+
+.site-wrapper{
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: 1fr auto;
 }
