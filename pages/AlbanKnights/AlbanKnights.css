@@ -145,3 +145,46 @@ span.alban-target-rank{
         margin-block: 1rem;
     }
 }
+
+
+/* testing delete or move after used for custome meter template*/
+
+.meter-component{
+      position: relative;
+    display: block;
+    border: 2px solid #cccccc;
+    background-color: #999;
+    border-radius: 10px;
+    height: 5px;
+    width: 400px;
+    margin-inline: auto;
+}
+.meter-component-containers{
+    position: relative;
+    display: grid;
+    grid-template-columns: 70fr 30fr 30fr 60fr 30fr;
+    height: 5px;
+    /* background-color: #90EE90; */
+    gap: 2px;
+}
+
+.meter-component-containers div{
+        background-color: #eeeeee;
+
+    height: 5px;
+}
+
+.meter-component-containers .meter-component-current{
+    position:absolute;
+    background-color: #00ff00aa;
+    z-index: 20;
+    transition: width 0.5s;
+}
+
+.meter-component-containers p{
+    margin-top: 6px;
+}
+
+.meter-component-containers div.fade{
+    opacity: .5;
+}

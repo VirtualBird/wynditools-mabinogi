@@ -14,8 +14,8 @@ body {
 }
 
 header{
-  position: fixed;
   display: flex;
+  position: fixed;
   align-items: center;
   padding: 4px;
   text-decoration: none;
@@ -24,7 +24,6 @@ header{
   width: 100%;
   top: 0;
   left: 0;
-  /* height: var(--header-height); */
 }
 
 header a{
@@ -38,7 +37,6 @@ header h1{
   margin: 8px;
   color: var(--color-primary);
   text-shadow: 0px 1px 2px rgb(00, 00, 00, 0.15);
-
   transition: color 0.1s;
 
     &:hover{
@@ -52,6 +50,36 @@ header h1{
     }
 }
 
+main{
+  margin-top: var(--header-height);
+}
+
+main > div{
+  margin-top: 4em;
+}
+
+footer{
+  font-size: 12px;
+  text-align: center;
+}
+
+h1 {
+  margin:0;
+}
+
+ul{
+  list-style: none;
+  padding: 0;
+}
+
+.site-wrapper{
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+/* Hamburger Menu */
 .menu-btn{
   width: 42px;
   height: 42px;
@@ -61,40 +89,18 @@ header h1{
   cursor: pointer;
 
   background-color: #ffffff00;
+
+  &:hover{
+    background-color: #eeeeee;
+  }
+
+  &:focus{
+    border-color: var(--color-primary);
+  }
 }
 
 .menu-btn img{
   display: block;
-}
-
-.menu-btn:hover{
-  background-color: #eeeeee;
-}
-
-.menu-btn:focus{
-  border-color: var(--color-primary);
-}
-
-main{
-  margin-top: var(--header-height);
-}
-
-h1 {
-  margin:0;
-}
-
-footer{
-  font-size: 12px;
-  text-align: center;
-}
-
-ul{
-  list-style: none;
-  padding: 0;
-}
-
-.italic{
-  font-style: italic;
 }
 
 .home-container{
@@ -114,25 +120,12 @@ ul{
   border-radius: 4px;
   transition: border-color 0.3s;
 
-  
   text-decoration: none;
   color:#333333;
-
-
-  
-
-  /* &:hover{
-      border-color: #ff44aa;
-      transition: border-color 0.3s;
-    } */
 }
 
 .not-found-page{
   text-align: center;
-}
-
-main > div{
-  margin-top: 4em;
 }
 
 .external-links{
@@ -151,14 +144,7 @@ main > div{
   }
 }
 
-.site-wrapper{
-  min-height: 100vh;
-  min-height: 100dvh;
-  display: grid;
-  grid-template-rows: 1fr auto;
-}
-
-/* Custome Button styling */
+/* Custom Styling Classes*/
 .style-btn-cute{
     cursor:pointer;
     transition: border 0.4s, background-color 0.1s;
@@ -173,4 +159,8 @@ main > div{
       color: var(--color-primary-darker);
       border-color: var(--color-primary);
     }
+}
+
+.italic{
+  font-style: italic;
 }

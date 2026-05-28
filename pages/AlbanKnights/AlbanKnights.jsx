@@ -2,7 +2,22 @@ import React from "react"
 import { albanKnightStonesData as stonesData } from "./AlbanKnightsData"
 import "./AlbanKnights.css"
 
+
+
 export default function(){
+
+        // NOTE: hardcoded value
+    const highestStones = {
+        yellow: 130,
+        red: 0,
+        green: 45,
+        gray: 45,
+
+        getMax() {
+            return (this.yellow + this.red + this.green + this.gray)
+        }
+        
+    }
 
     const [yellow, setYellow] = React.useState(null)
     const [red, setRed] = React.useState(null)
@@ -148,6 +163,11 @@ export default function(){
         }
     }
 
+    //  takes 2 values returns a percentage as a string
+    function calcAsPercent(value, maxValue){
+        return String(Number(value) / Number(maxValue) *100) + "%"
+    }
+
     function isTargetScorePossibleWithStone(stone){
 
         if (!targetScore){
@@ -155,13 +175,7 @@ export default function(){
         }
 
         const {value, color} = stone
-        // NOTE: hardcoded value
-        const highestStones = {
-            yellow: 130,
-            red: 0,
-            green: 45,
-            gray: 45,
-        }
+
 
         //use slotted stones as value if they exist
         if (yellow){
@@ -238,6 +252,18 @@ export default function(){
                             </button>
                         </li>
                     </ul>
+                </div>
+
+                {/* Might be better to turn this into a reusable component and not hardcoded */}
+                <div className="meter-component">
+                    <div className="meter-component-containers">
+                        <div className="meter-component-current" style={{"width" : calcAsPercent(addAll(), 220)}}></div>
+                        <div><p>C</p></div>
+                        <div className={`${addAll() < 70 ? "fade" : ""}`}><p>B</p></div>
+                        <div className={`${addAll() < 100 ? "fade" : ""}`}><p>A</p></div>
+                        <div className={`${addAll() < 130 ? "fade" : ""}`}><p>S</p></div>
+                        <div className={`${addAll() < 190 ? "fade" : ""}`}><p>SS</p></div>
+                    </div>
                 </div>
 
                 <div className="alban-knights-reward-container">
