@@ -2,14 +2,14 @@ import React from "react"
 import { NavLink, Outlet } from "react-router-dom"
 import "./Navbar.css"
 
-export default function Navbar(){
+export default function Navbar({isOpen}){
 
     const activeStyles = {
         color: "#ff99aa"
     }
 
     return (
-        <nav>
+        <nav className={isOpen ? "isOpen": ""}>
             <NavLink 
                 to="wine-making"
                 className={({ isActive }) =>

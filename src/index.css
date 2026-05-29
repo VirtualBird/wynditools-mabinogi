@@ -1,3 +1,10 @@
+/* Media Quary notes
+480px → small phones
+768px → tablets / mobile → desktop switch point
+1024px → small laptops
+1280px+ → large screens
+ */
+
 :root{
   --color-primary-darker: #ff0081;
   --color-primary-dark: #ff48a5;
@@ -17,7 +24,6 @@ header{
   display: flex;
   position: fixed;
   align-items: center;
-  padding: 4px;
   text-decoration: none;
   background-color: #fefefe;
   box-shadow: 0 0 4px 0px #00000037;
@@ -73,6 +79,7 @@ ul{
 }
 
 .site-wrapper{
+  position: relative;
   min-height: 100vh;
   min-height: 100dvh;
   display: grid;
@@ -81,6 +88,9 @@ ul{
 
 /* Hamburger Menu */
 .menu-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 42px;
   height: 42px;
 
@@ -97,10 +107,14 @@ ul{
   &:focus{
     border-color: var(--color-primary);
   }
+
+  /* To fix issue with mobile button disappearing when shrinking site */
+  flex-shrink: 0;
 }
 
 .menu-btn img{
-  display: block;
+  /* width: 100%; */
+
 }
 
 .home-container{
@@ -164,3 +178,4 @@ ul{
 .italic{
   font-style: italic;
 }
+
