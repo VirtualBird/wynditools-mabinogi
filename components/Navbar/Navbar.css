@@ -39,47 +39,42 @@ nav a:hover{
     display: none;
 }
 
-/* Mobile */
-@media (max-width: 768px){
-  header nav {
-    flex-direction: column;
-    grid-area: nav;
-    display: none;
-    gap: 0;
-    margin:0;
+.header-home{
+    width: fit-content;
 }
 
+/* Mobile layout*/
+/* If we end up having a lot of pages I may have to switch the whole site to work with menu btn layout */
+@media (max-width: 768px){
+    header {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-areas: 
+            "btn title"
+            "nav nav";
+    }
+
+    header nav {
+        flex-direction: column;
+        grid-area: nav;
+        display: none;
+        gap: 0;
+        margin:0;
+    }
+
     header nav a{
-        position: absolute;
         padding-block: 1rem;
-        bottom: 10px;
     }
-
-    header nav.isOpen a{
-        position: relative;
-        bottom: unset;
-    }
-
     header nav.isOpen{
         display: flex;
     }
 
-  header .menu-btn{
-    display: block;
-    grid-area: btn;
-  }
+    header .menu-btn{
+        display: block;
+        grid-area: btn;
+    }
 
-  header {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-template-areas: 
-    "btn title"
-    "nav nav";
-  }
-
-  header .header-home{
-    align-items: start;
-    grid-area: title;
-  }
+    header .header-home{
+        grid-area: title;
+    }
 }
-
