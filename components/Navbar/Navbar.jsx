@@ -2,19 +2,20 @@ import React from "react"
 import { NavLink, Outlet } from "react-router-dom"
 import "./Navbar.css"
 
-export default function Navbar({isOpen}){
+export default function Navbar({isOpen, closeNav}){
 
     const activeStyles = {
         color: "#ff99aa"
     }
 
     return (
-        <nav className={isOpen ? "isOpen": ""}>
+        <nav className={isOpen ? "isOpen": ""} >
             <NavLink 
                 to="wine-making"
                 className={({ isActive }) =>
                     isActive ? "active" : null
                 }    
+                onClick={closeNav}
             >
                 Wine Making
             </NavLink>
@@ -24,6 +25,7 @@ export default function Navbar({isOpen}){
                 className={({ isActive }) =>
                     isActive ? "active" : null
                 }    
+                onClick={closeNav}
             >
                 Alban Knights Training Stones
             </NavLink>
@@ -33,6 +35,7 @@ export default function Navbar({isOpen}){
                 className={({ isActive }) =>
                     isActive ? "active" : null
                 }    
+                onClick={closeNav}
             >
                 Get Cooked
             </NavLink>

@@ -17,7 +17,7 @@ export default function Header(){
             <button className="menu-btn" onClick={() => menuBtnToggle()}><img src={menuIcon}/></button>
             <Link to="/" className="header-home"><h1>Wynditools</h1></Link>
             
-            <Navbar isOpen={isOpen}/>
+            <Navbar isOpen={isOpen} closeNav={() => setOpen(false)}/>
         </header>
     )
 }
