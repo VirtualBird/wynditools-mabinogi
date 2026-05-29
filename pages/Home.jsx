@@ -3,9 +3,11 @@ import {Link} from "react-router-dom"
 
 export default function Home(){
     return (
-        <div className="home-container">
-            <h1>Home Component</h1>
-            <p>Excuse the layout this is still a work in progress some things are liable to break while under construction</p>
+        <div className="home-container container">
+            <h1>Wynditools Mabinogi</h1>
+            <p>Welcome to Wynditools, a web app made to help with Mabinogi related info</p>
+            <p>This site is still being worked on and as such some features may be limited</p>
+            
             
             <Link to="wine-making" className="tile-container style-btn-cute">
                 Wine Making Calculator
