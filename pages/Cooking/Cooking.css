@@ -109,9 +109,24 @@ input#item-search{
     margin-top: 0;
 }
 
-.recipe-tree span{
+.recipe-tree span.method{
     font-size: 0.75rem;
     color: gray;
+}
+
+.recipe-tree-list .recipe-tree-item-name{
+    margin-block:0.1em;
+}
+
+
+
+.cooking-clickable-item{
+    cursor: pointer;
+
+    &:hover{
+        color: var(--color-primary-darker);
+        transition: 0.3s;
+    }
 }
 
 @media (max-width: 768px){

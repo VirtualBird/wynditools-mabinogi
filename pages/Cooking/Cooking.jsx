@@ -6,6 +6,7 @@ import {
         } from './cookingUtils.js'
 
 import SearchList from './components/SearchList.jsx'
+import ClickableItemText from './components/ClickableItemText.jsx'
 
 import './Cooking.css'
 
@@ -30,7 +31,8 @@ export default function Cooking(){
                 handleItemSearchClick(event.target.dataset.name)
             }
             else if (event.target.dataset.name){
-
+                console.log(event.target.dataset.name, "was Clicked")
+                // Do logic for displaying/setting selected item
             }
 
             console.log(event.target)
@@ -196,7 +198,7 @@ export default function Cooking(){
             return <div>
                 <p>Main Ingredients</p>
                 <ul>
-                    {items.map(item => <li>{item.name} ({item.percent}%)</li>)}
+                    {items.map(item => <li>{<ClickableItemText>{item.name}</ClickableItemText>} ({item.percent}%)</li>)}
                 </ul>
             </div>
         }
@@ -281,8 +283,8 @@ export default function Cooking(){
 
                 return <ul className="recipe-tree-list">{recipeTree.map(item => (
                     <li>
-                        <span>{getMethodByName(item.name)}</span>
-                        <p>{item.name}</p>
+                        <span className='method'>{getMethodByName(item.name)}</span>
+                        <p className='recipe-tree-item-name'><ClickableItemText>{item.name}</ClickableItemText></p>
                         {renderIngredientTree(item.nested)}
                     </li>
                 ))}</ul>
@@ -368,7 +370,7 @@ export default function Cooking(){
 
         for (const item in baseIngObj){
             const quantity = baseIngObj[item]
-            elements.push(<li>{`${quantity}x ${item}`}</li>)
+            elements.push(<li>{`${quantity}x `}<ClickableItemText>{item}</ClickableItemText></li>)
         }
         
         const finalElement = <div className='cooking-base-ingredients'>
@@ -521,7 +523,7 @@ export default function Cooking(){
         }
 
         const content = instructionsArr.map(({name, method, depthOccurances}) => {
-            return <li>{method} {depthOccurances.length} {name}</li>
+            return <li>{method} {depthOccurances.length} <ClickableItemText>{name}</ClickableItemText></li>
         })
 
         return (
