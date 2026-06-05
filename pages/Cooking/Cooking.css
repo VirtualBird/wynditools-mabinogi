@@ -113,3 +113,10 @@ input#item-search{
     font-size: 0.75rem;
     color: gray;
 }
+
+@media (max-width: 768px){
+    input#item-search{
+        /* 16px font size to prevent mobile zoom behaviour */
+        font-size: 1rem;
+    }
+}
