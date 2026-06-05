@@ -170,41 +170,43 @@ export default function(){
 
     function isTargetScorePossibleWithStone(stone){
 
+        const highestStonesCopy = {...highestStones}
+
         if (!targetScore){
             return true
         }
 
         const {value, color} = stone
 
-
         //use slotted stones as value if they exist
         if (yellow){
-            highestStones.yellow = yellow.value
+            highestStonesCopy.yellow = yellow.value
         }
         if (red){
-            highestStones.red = red.value
+            highestStonesCopy.red = red.value
         }
         if (green){
-            highestStones.green = green.value
+            highestStonesCopy.green = green.value
         }
         if (gray){
-            highestStones.gray = gray.value
+            highestStonesCopy.gray = gray.value
         }
 
+        // Replace value with current stone colors value for calculations
         if (color === "yellow"){
-            highestStones.yellow = value
+            highestStonesCopy.yellow = value
         }
         if (color === "red"){
-            highestStones.red = value
+            highestStonesCopy.red = value
         }
         if (color === "green"){
-            highestStones.green = value
+            highestStonesCopy.green = value
         }
         if (color === "gray"){
-            highestStones.gray = value
+            highestStonesCopy.gray = value
         }
 
-        const selectValue = highestStones.red + highestStones.yellow + highestStones.green + highestStones.gray
+        const selectValue = highestStonesCopy.red + highestStonesCopy.yellow + highestStonesCopy.green + highestStonesCopy.gray
 
         if (selectValue >= targetScore){
             return true
@@ -222,31 +224,31 @@ export default function(){
                     <h3>Select Target Reward Tier</h3>
                     <ul className="alban-target-score-wrapper">
                         <li>
-                            <button className={`style-btn-cute ${targetScore >= 190 ? "selected" : null}`} onClick={()=>setTargetScore(190)}>
+                            <button className={`style-btn-cute ${targetScore >= 190 ? "selected" : undefined}`} onClick={()=>setTargetScore(190)}>
                                 <span className="alban-target-rank">SS</span>
                                 <span>190+</span>
                             </button>
                         </li>
                         <li>
-                            <button className={`style-btn-cute ${targetScore === 130 ? "selected" : null}`} onClick={()=>setTargetScore(130)}>
+                            <button className={`style-btn-cute ${targetScore === 130 ? "selected" : undefined}`} onClick={()=>setTargetScore(130)}>
                                 <span className="alban-target-rank">S</span>
                                 <span>130+</span>
                             </button>
                         </li>
                         <li>
-                            <button className={`style-btn-cute ${targetScore === 100 ? "selected" : null}`} onClick={()=>setTargetScore(100)}>
+                            <button className={`style-btn-cute ${targetScore === 100 ? "selected" : undefined}`} onClick={()=>setTargetScore(100)}>
                                 <span className="alban-target-rank">A</span>
                                 <span>100+</span>
                             </button>
                         </li>
                         <li>
-                            <button className={`style-btn-cute ${targetScore === 70 ? "selected" : null}`} onClick={()=>setTargetScore(70)}>
+                            <button className={`style-btn-cute ${targetScore === 70 ? "selected" : undefined}`} onClick={()=>setTargetScore(70)}>
                                 <span className="alban-target-rank">B</span>
                                 <span>70+</span>
                             </button>
                         </li>
                         <li>
-                            <button className={`style-btn-cute ${targetScore < 70 ? "selected" : null}`} onClick={()=>setTargetScore(0)}>
+                            <button className={`style-btn-cute ${targetScore < 70 ? "selected" : undefined}`} onClick={()=>setTargetScore(0)}>
                                 <span className="alban-target-rank">C</span>
                                 <span>0-69</span>
                             </button>
@@ -276,27 +278,41 @@ export default function(){
 
                 <p>Click on an item in the list to add them to the slot.</p>
                 <p>Stones in the list will fade out if it is not possible to reach the set target tier.</p>
+
+                <div className="stones-value-wrapper">
+                    <div>
+                        <p>Ywllow</p>
+                        <p className="stone-active-value">{yellow?.value ? yellow.value : 0}</p>
+                    </div>
+                    <div>
+                        <p>Red</p>
+                        <p className="stone-active-value">{red?.value ? red.value : 0}</p></div>
+                    <div>
+                        <p>Green</p>
+                        <p className="stone-active-value">{green?.value ? green.value : 0}</p>
+                    </div>
+                    <div>
+                        <p>Gray</p>
+                        <p className="stone-active-value">{gray?.value ? gray.value : 0}</p>
+                    </div>
+                </div>
                 <div className="stones-container">
                     <div className="yellow-container">
-                        <p className="stone-active-value">{yellow?.value ? yellow.value : 0}</p>
                         <div onClick={() => setYellow(null)} className="stone-active-slot">{yellow?.name ? yellow.name : "Empty"}</div>
                         {renderStones("yellow")}
                     </div>
 
                     <div className="red-container">
-                        <p className="stone-active-value">{red?.value ? red.value : 0}</p>
                         <div onClick={() => setRed(null)} className="stone-active-slot">{red?.name ? red.name : "Empty"}</div>
                         {renderStones("red")}
                     </div>
 
                     <div className="green-container">
-                        <p className="stone-active-value">{green?.value ? green.value : 0}</p>
                         <div onClick={() => setGreen(null)} className="stone-active-slot">{green?.name ? green.name : "Empty"}</div>
                         {renderStones("green")}
                     </div>
 
                     <div className="gray-container">
-                        <p className="stone-active-value">{gray?.value ? gray.value : 0}</p>
                         <div onClick={() => setGray(null)} className="stone-active-slot">{gray?.name ? gray.name : "Empty"}</div>
                         
                         {renderStones("gray")}

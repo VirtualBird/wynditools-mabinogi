@@ -100,6 +100,14 @@
     background-color: lightgray;
 }
 
+.stones-value-wrapper{
+    display: flex;
+
+    div{
+        flex: 1;
+    }
+}
+
 .stone-active-slot:hover{
     background-color: lightpink;
     border-color: red;
@@ -116,15 +124,31 @@
     display: block;
 }
 
+.alban-target-score-wrapper li{
+    /* width: min(80px, 100%); */
+    /* flex: 1; */
+    /* max-width: 80px;
+    width: 100%; */
+    flex: 0 1 100px;
+}
+
 .alban-target-score-wrapper button{
-    /* Uhh this width isn't responsive design friendly idk how to fix*/
-    width: 80px;
+    /* Uhh this width isn't responsive design friendly idk how to fix
+        Nevermind you gotta make parent element li have width property.
+    */
+    display: block;
+    width: 100%;
     border: 2px solid #eeeeee;
     background-color: white;
+    flex-shrink: 0;
 }
 
 span.alban-target-rank{
     font-size: 1.5rem;
+}
+
+.alban-knights-reward-container{
+    margin-top: 2rem;
 }
 
 .alban-knights-reward-container div{
@@ -132,6 +156,7 @@ span.alban-target-rank{
     border-radius: 8px;
     margin-inline: auto;
     width: 100px;
+    
 }
 
 .alban-knights-reward-container > div{
@@ -150,13 +175,13 @@ span.alban-target-rank{
 /* testing delete or move after used for custome meter template*/
 
 .meter-component{
-      position: relative;
+    position: relative;
     display: block;
     border: 2px solid #cccccc;
     background-color: #999;
     border-radius: 10px;
     height: 5px;
-    width: 400px;
+    max-width: 500px;
     margin-inline: auto;
 }
 .meter-component-containers{
@@ -187,4 +212,15 @@ span.alban-target-rank{
 
 .meter-component-containers div.fade{
     opacity: .5;
+}
+
+@media (max-width: 768px){
+    .alban-knights-page .stones-container{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .alban-target-score-wrapper{
+
+    }
 }
