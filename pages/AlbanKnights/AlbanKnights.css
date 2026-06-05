@@ -102,7 +102,9 @@
 
 .stones-value-wrapper{
     display: flex;
-
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
     div{
         flex: 1;
     }

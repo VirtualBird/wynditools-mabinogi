@@ -275,13 +275,9 @@ export default function(){
                         <h3>{addAll()}</h3>
                     </div>
                 </div>
-
-                <p>Click on an item in the list to add them to the slot.</p>
-                <p>Stones in the list will fade out if it is not possible to reach the set target tier.</p>
-
-                <div className="stones-value-wrapper">
+<div className="stones-value-wrapper">
                     <div>
-                        <p>Ywllow</p>
+                        <p>Yellow</p>
                         <p className="stone-active-value">{yellow?.value ? yellow.value : 0}</p>
                     </div>
                     <div>
@@ -296,6 +292,10 @@ export default function(){
                         <p className="stone-active-value">{gray?.value ? gray.value : 0}</p>
                     </div>
                 </div>
+                <p>Click on an item in the list to add them to the slot.</p>
+                <p>Stones in the list will fade out if it is not possible to reach the set target tier.</p>
+
+                
                 <div className="stones-container">
                     <div className="yellow-container">
                         <div onClick={() => setYellow(null)} className="stone-active-slot">{yellow?.name ? yellow.name : "Empty"}</div>
