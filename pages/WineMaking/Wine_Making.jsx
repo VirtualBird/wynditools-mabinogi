@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import {useState} from "react"
 
 import Slider from "./components/Slider"
@@ -7,12 +7,31 @@ import Tooltip from "../../components/Tooltip/Tooltip"
 
 export default function Wine_Making(){
 
-    const [wine, setWine] = useState({
-        purity: 100,
-        acidity: 100,
-        freshness: 100,
-        age: 0, 
+    const [wine, setWine] = useState( () => {
+        try {
+            return (
+                JSON.parse(localStorage.getItem("winemakingValues")) ?? {
+                    purity: 100,
+                    acidity: 100,
+                    freshness: 100,
+                    age: 0, 
+                }
+            )
+        }
+        catch {
+            return {
+                purity: 100,
+                acidity: 100,
+                freshness: 100,
+                age: 0, 
+            }
+        }
     })
+
+    useEffect(() => {
+        // Might consider wrapping this in a try/catch too...? Probably not necessary though.
+        localStorage.setItem("winemakingValues", JSON.stringify(wine))
+    }, [wine])
 
     function calculateWineScore()
     {
