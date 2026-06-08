@@ -70,6 +70,10 @@ export default function(){
         return sum
     }
 
+    function isTargetScoreMet(){
+        return addAll() >= targetScore
+    }
+
     function showList(color){
         console.log("running function")
 
@@ -259,7 +263,7 @@ export default function(){
                 {/* Might be better to turn this into a reusable component and not hardcoded */}
                 <div className="meter-component">
                     <div className="meter-component-containers">
-                        <div className="meter-component-current" style={{"width" : calcAsPercent(addAll(), 220)}}></div>
+                        <div className="meter-component-current" style={{"width" : calcAsPercent(addAll(), 220), "backgroundColor": isTargetScoreMet() ? "#00ff00aa" : "#ff0000aa"}}></div>
                         <div><p>C</p></div>
                         <div className={`${addAll() < 70 ? "fade" : ""}`}><p>B</p></div>
                         <div className={`${addAll() < 100 ? "fade" : ""}`}><p>A</p></div>
@@ -268,11 +272,11 @@ export default function(){
                     </div>
                 </div>
 
-                <div className="alban-knights-reward-container">
+                <div className={`alban-knights-reward-container ${isTargetScoreMet() ? "" : "red"}`}>
                     <h3>Current Alban Knights Reward Tier</h3>
                     <div>
                         <h2>{getTier(addAll())}</h2>
-                        <h3>{addAll()}</h3>
+                        <h3 className={`${isTargetScoreMet() ? "" : "red"}`}>{addAll()}</h3>
                     </div>
                 </div>
 <div className="stones-value-wrapper">
