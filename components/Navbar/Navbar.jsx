@@ -2,6 +2,7 @@ import React from "react"
 import { NavLink, Outlet } from "react-router-dom"
 import "./Navbar.css"
 
+// Uhh maybe I don't need to pass the function prop anymore after changing the button logic in Header.jsx
 export default function Navbar({isOpen, closeNav}){
 
     const activeStyles = {
@@ -15,7 +16,7 @@ export default function Navbar({isOpen, closeNav}){
                 className={({ isActive }) =>
                     isActive ? "active" : null
                 }    
-                onClick={closeNav}
+                // onClick={closeNav}
             >
                 Wine Making
             </NavLink>
@@ -25,7 +26,7 @@ export default function Navbar({isOpen, closeNav}){
                 className={({ isActive }) =>
                     isActive ? "active" : null
                 }    
-                onClick={closeNav}
+                // onClick={closeNav}
             >
                 Alban Knights Training Stones
             </NavLink>
@@ -35,7 +36,7 @@ export default function Navbar({isOpen, closeNav}){
                 className={({ isActive }) =>
                     isActive ? "active" : null
                 }    
-                onClick={closeNav}
+                // onClick={closeNav}
             >
                 Get Cooked
             </NavLink>
