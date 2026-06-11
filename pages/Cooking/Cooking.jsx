@@ -57,23 +57,31 @@ export default function Cooking(){
         }
     }, [])
 
+    React.useEffect(() => {
+        console.log("referToRecipes changed: ", referToRecipes)
+    }, [referToRecipes])
+
+    // Update Recipe Tree when main item changes or refer to recipes changes
+    React.useEffect(() => {
+        if (!mainItem) return
+
+        setRecipeTree(getRecipeTree(mainItem))
+    },[mainItem, referToRecipes])
+
     function handleItemSearchClick(itemName){
         const itemObj = getIngredientObjByName(itemName)
         setMainItem(itemObj)
-
-        // I suppose when you set a main item I should set everything to use recipe1 by default
-        // I need to be able to go through the nested recipes and save that in state
-        setRecipeTree(getRecipeTree(itemObj))
     }
 
     function addReferToRecipes(itemName, recipe){
+        console.log("adding", itemName, recipe);
         setReferToRecipes(prev => ({...prev, [itemName]: recipe}) )
     }
 
     function getReferToRecipeByName(itemName){
         // obj lookup recipe of itemName if it exists, default to recipe1 if doesn't exist
         const referRecipe = referToRecipes?.[itemName] ?? "recipe1"
-
+        
         if (referRecipe){
             return referRecipe
         }
@@ -81,20 +89,21 @@ export default function Cooking(){
         return "recipe1"
     }
 
-    //  I think I'm gonna need an Update RecipeTree function???
-    //  Maybe adding another function to pass in the old recipe tree to compare to could work? no idea
+    //  This runs in useEffect whenever anything in recipeTree or referToRecipes changes
     function getRecipeTree(itemObj, selected = "recipe1"){
         const recipe = {}
         const selectedRecipe = getReferToRecipeByName(itemObj.name)
-        // if recipe property exists
+        console.log(selectedRecipe)
+        // If Recipe property exists
         if (itemObj?.recipe){
             // Check for instances of other recipes
-            
             let recipeCounter = 0
             recipe["name"] = itemObj.name
-            // recipe["selected"] = selected
-            
             recipe["selected"] = selectedRecipe
+
+            if (recipe["selected"] == "purchase"){
+                console.log(itemObj.name, "is purchaseable")
+            }
 
             if (itemObj.recipe.recipe1){
                 recipe["recipe1"] = true
@@ -118,7 +127,6 @@ export default function Cooking(){
             }
             recipe["hasMultiple"] = recipeCounter > 1 ? true: false
             recipe["nested"] = []
-            
 
             // console.log(itemObj.recipe[selected])
 
@@ -130,8 +138,8 @@ export default function Cooking(){
                     })
 
                     // console.log("Found Item", ingredient.name, ingrObj, )
-                    //if this item has recipe property
 
+                    //  If this item has recipe property
                     if (ingrObj && 'recipe' in ingrObj){
                         //I need to add a property of that nested uhh I'll use an obj
                         const nestedRecipe = getRecipeTree(ingrObj)
@@ -143,7 +151,7 @@ export default function Cooking(){
                     }
                     else // if ingrObj doesn't exist and all we have is a name
                     {
-                        //  Just throw the ingredient name in there lmao
+                        //  Just push the ingredient's name into the array
                         const nestedRecipe = getRecipeTree(ingredient.name)
                         recipe["nested"].push(nestedRecipe)
                     }
@@ -160,8 +168,9 @@ export default function Cooking(){
             recipe["hasMultiple"] = false
             return recipe
         }
-        else{ //    If object doesn't have recipe property
-            // console.log(`Item does not have recipe property: `, itemObj)
+        // If object doesn't have recipe property
+        else{
+            // You know techinically this shouldn't run unless there's some crazy script manipulation happening...?
             recipe["name"] = itemObj?.name ? itemObj.name : "UNDEFINED ITEM"
             recipe["hasMultiple"] = false
             return recipe
@@ -179,13 +188,7 @@ export default function Cooking(){
     function handleSearchInput(value){
         setItemSearch(value)
     }
-
-    function setMainSelectedRecipe(value){
-        //setRecipeTree({...recipeTree, selected: value})
-        //does this not update th other things
-        setRecipeTree(getRecipeTree(mainItem, value))
-    }
-
+    
     //  This is the main dish selected
     function renderMainDish(item){
         if (item){
@@ -194,6 +197,7 @@ export default function Cooking(){
 
             const hasMultipleRecipes = Object.keys(item.recipe ?? {}).length > 1 ? true : false
             const hasRecipeAndPrice = null
+            const referRecipe = getReferToRecipeByName(item.name)
 
             return <div className="cooking-main-item-content">
                 <h2>Main Item</h2>
@@ -202,11 +206,13 @@ export default function Cooking(){
 
                 {hasMultipleRecipes ? <p>This item has multiple known recipes</p> : null}
                 {hasMultipleRecipes ? <p className='cooking-main-item-recipes'>
-                    {item.recipe?.ingame ? <span className={recipeTree.selected === "ingame" ? "selected" : ""} onClick={() => setMainSelectedRecipe("ingame")}>In-game</span> : null}
-                    {item.recipe?.recipe1 ? <span className={recipeTree.selected === "recipe1" ? "selected" : ""} onClick={() => setMainSelectedRecipe("recipe1")}>1</span> : null}
-                    {item.recipe?.recipe2 ? <span className={recipeTree.selected === "recipe2" ? "selected" : ""} onClick={() => setMainSelectedRecipe("recipe2")}>2</span> : null}
-                    {item.recipe?.recipe3 ? <span className={recipeTree.selected === "recipe3" ? "selected" : ""} onClick={() => setMainSelectedRecipe("recipe3")}>3</span> : null}
-                    {item.recipe?.recipe4 ? <span className={recipeTree.selected === "recipe4" ? "selected" : ""} onClick={() => setMainSelectedRecipe("recipe4")}>4</span> : null}
+                    {item.recipe?.ingame ? <span className={referRecipe === "ingame" ? "selected" : ""} onClick={() => addReferToRecipes(item.name, "ingame")}>In-game</span> : null}
+                    {item.recipe?.recipe1 ? <span className={referRecipe === "recipe1" ? "selected" : ""} onClick={() => addReferToRecipes(item.name, "recipe1")}>1</span> : null}
+                    {item.recipe?.recipe2 ? <span className={referRecipe === "recipe2" ? "selected" : ""} onClick={() => addReferToRecipes(item.name, "recipe2")}>2</span> : null}
+                    {item.recipe?.recipe3 ? <span className={referRecipe === "recipe3" ? "selected" : ""} onClick={() => addReferToRecipes(item.name, "recipe3")}>3</span> : null}
+                    {item.recipe?.recipe4 ? <span className={referRecipe === "recipe4" ? "selected" : ""} onClick={() => addReferToRecipes(item.name, "recipe4")}>4</span> : null}
+                    {item?.purchase ?  <span className={referRecipe === "purchase" ? "selected" : ""} data-refer-name={item.name} data-refer-recipe="purchase">Purchase</span> : null}
+
                     </p> : null}
 
                 {item.recipe ? renderMainRecipe(): null}
@@ -307,14 +313,16 @@ export default function Cooking(){
     {
         if (mainItem && recipeTree){
             //Uhh so I need to get the recipe tree
-            const items = mainItem.recipe[recipeTree.selected]
+            const referRecipe = getReferToRecipeByName(mainItem.name)
+            const items = mainItem.recipe[referRecipe]
             // console.log("Render this", items)
             // Might be possible for something to break here if the item returned has no name/percent
             return <div>
+                {referRecipe !== "purchase" && <>
                 <p>Main Ingredients</p>
                 <ul>
                     {items.map(item => <li>{<ClickableItemText>{item.name}</ClickableItemText>} ({item.percent}%)</li>)}
-                </ul>
+                </ul></>}
             </div>
         }
         return <></>
@@ -398,7 +406,7 @@ export default function Cooking(){
 
                 return <ul className="recipe-tree-list">{recipeTree.map(item => (
                     <li>
-                        <span className='method'>{getMethodByName(item.name)}</span>
+                        <span className='method'>{getReferToRecipeByName(item.name) === "purchase" ? "Purchase" : getMethodByName(item.name)}</span>
                         <p className='recipe-tree-item-name'><ClickableItemText>{item.name}</ClickableItemText></p>
                         {renderIngredientTree(item.nested)}
                     </li>
@@ -445,13 +453,27 @@ export default function Cooking(){
             }
             //  If a nested property exists in Recipe Tree
             else if (recipeTree.nested){
-                // console.log("F2 Nested property exists")
-                // console.log("Checking Nested Property")
-                //  recursively go through that nested property
-                const something2 = getBaseIngredientsFromRecipeTree(recipeTree.nested)
-                // console.log("F2 something2", something2)
-                //push it all to ingredients arr
-                ingredientsArr.push(...something2)
+                // console.warn(recipeTree.selected, recipeTree)
+
+                const userSelectedPurchaseable = getReferToRecipeByName(recipeTree.name) === "purchase"
+
+                //  If the property was selected to be purchaseable
+                if (userSelectedPurchaseable){
+                    // Push the item directly
+                    ingredientsArr.push(recipeTree.name)
+                }
+                // If we're just cooking the item
+                else{
+                    // console.log("F2 Nested property exists")
+                    // console.log("Checking Nested Property")
+                    //  recursively go through that nested property
+                    const something2 = getBaseIngredientsFromRecipeTree(recipeTree.nested)
+                    // console.log("F2 something2", something2)
+                    //push it all to ingredients arr
+                    ingredientsArr.push(...something2)
+                }
+
+                
             }
             else{
             //  If none of above then we're returning the base ingredient's name
@@ -498,36 +520,26 @@ export default function Cooking(){
     //  Go through an object's recipe tree and return an array of objects to use later
     function instructionsArr(recipeTree, currentDepth = 0){
         const instructions = []
-
         // console.log("depth:", currentDepth, "Calling instructionsArr", recipeTree)
 
         //  If looking through a Recipe Tree
         if (recipeTree)
         {
-            //If looking through an array
+            //  If looking through an array of items
             if (Array.isArray(recipeTree)){
-                //  Encountering a problem
-                
-                
-                //go through array and
-                //tf do I do uhh 
+
                 const something1 = recipeTree.map(item => {
-                    // console.log("something1", item)
+                    console.log("something1", item)
+
                     //  I need to be able to tell the difference between a recipeTree.nested and an instructionsArr
                     if (Object.hasOwn(item, "hasMultiple")){
                         // console.log("recipeTree.nested", item)
                         if (item.nested){
                             // console.log("Thats nested bro push that rizz in", item)
                             // If this has nested properties need to push instructions
-                            // instructions.push({
-                            //     name: item.name,
-                            //     push: item.method ?? getMethodByName(item.name),
-                            //     depthOccurances: [currentDepth+1]
-                            // })
 
                             //Ok so I HAVE to recursively go through from here
                             //do i just... call it on the item?
-                            // console.log("I need to do something recursive here")
                             instructions.push(...instructionsArr(item, currentDepth+1))
                         }
                         
@@ -536,11 +548,10 @@ export default function Cooking(){
                     else if (Object.hasOwn(item, "depthOccurances")){
                         // console.log("depthOccurances", item)
                     }
-                    
                 })
             }
+            // If looking through a single item
             else if (recipeTree.nested){
-
                 // So.... I have to go through the nested property right? recursively
                 const thatNestedThang = instructionsArr(recipeTree.nested, currentDepth)
                 // console.log("nested thang", thatNestedThang)
