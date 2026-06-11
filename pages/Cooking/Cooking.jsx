@@ -23,6 +23,8 @@ export default function Cooking(){
     const [mainItem, setMainItem] = React.useState(null)
     const [recipeTree, setRecipeTree] = React.useState()
     const [selectedItemName, setSelectedItemName] = React.useState(null)
+    const [referToRecipes, setReferToRecipes] = React.useState({})
+
 
     React.useEffect(() => {
         function handleClick(event){
@@ -35,6 +37,14 @@ export default function Cooking(){
                 console.log(event.target.dataset.name, "was Clicked")
                 // Do logic for displaying/setting selected item
                 setSelectedItemName(event.target.dataset.name)
+            }
+            // If user clicked on span to change recipe
+            else if (event.target.dataset.referName && event.target.dataset.referRecipe){
+                const itemReferName = event.target.dataset.referName
+                const itemReferRecipe = event.target.dataset.referRecipe
+
+                console.log(itemReferName, itemReferRecipe, "clicked")
+                addReferToRecipes(itemReferName, itemReferRecipe)
             }
 
             console.log(event.target)
@@ -56,17 +66,35 @@ export default function Cooking(){
         setRecipeTree(getRecipeTree(itemObj))
     }
 
+    function addReferToRecipes(itemName, recipe){
+        setReferToRecipes(prev => ({...prev, [itemName]: recipe}) )
+    }
+
+    function getReferToRecipeByName(itemName){
+        // obj lookup recipe of itemName if it exists, default to recipe1 if doesn't exist
+        const referRecipe = referToRecipes?.[itemName] ?? "recipe1"
+
+        if (referRecipe){
+            return referRecipe
+        }
+
+        return "recipe1"
+    }
+
     //  I think I'm gonna need an Update RecipeTree function???
     //  Maybe adding another function to pass in the old recipe tree to compare to could work? no idea
     function getRecipeTree(itemObj, selected = "recipe1"){
         const recipe = {}
+        const selectedRecipe = getReferToRecipeByName(itemObj.name)
         // if recipe property exists
         if (itemObj?.recipe){
             // Check for instances of other recipes
             
             let recipeCounter = 0
             recipe["name"] = itemObj.name
-            recipe["selected"] = selected
+            // recipe["selected"] = selected
+            
+            recipe["selected"] = selectedRecipe
 
             if (itemObj.recipe.recipe1){
                 recipe["recipe1"] = true
@@ -94,8 +122,8 @@ export default function Cooking(){
 
             // console.log(itemObj.recipe[selected])
 
-            if (itemObj.recipe[selected]){
-                for (const ingredient of itemObj.recipe[selected]){
+            if (itemObj.recipe[selectedRecipe]){
+                for (const ingredient of itemObj.recipe[selectedRecipe]){
                     // console.log("this ingredient", ingredient)
                     const ingrObj = ingredientsData.find(item => {
                         return item.name === ingredient.name
@@ -182,7 +210,13 @@ export default function Cooking(){
                     </p> : null}
 
                 {item.recipe ? renderMainRecipe(): null}
-                {item.purchase ?? '' ? <p>Purchase from: {item.purchase.join(", ")} ({item.price ?? 'PRICE MISSING'}{itemCurrency})</p> : null}
+
+                {/* Display NPC Purchase location and price if available */}
+                {item.purchase ?? '' ? <p>Purchase from: {item.purchase.join(", ")} ({item.price ?? '-PRICE UNKNOWN-'}{itemCurrency})</p> : null}
+
+                {/* Display Fishing if available */}
+                {item?.fishing && <p>Fishing: {item.fishing.map(location => location).join(', ')}</p>}
+
             </div>
         }
         else{
@@ -190,9 +224,84 @@ export default function Cooking(){
         }
     }
 
+        // Render sub ingredient details
+    function renderSelectedItem(){
+        const itemName = selectedItemName
+        const itemObj = getIngredientObjByName(itemName)
+        const referRecipe = getReferToRecipeByName(itemName)
+
+        if (itemName && !itemObj){
+            return <div className="cooking-selected-item-wrapper">Error: {itemName} is missing from database.</div>
+        }
+        else if(!itemObj){
+            return <></>
+        }
+
+        const itemMethod = itemObj?.method ?? ''
+        const itemHasRecipes = hasRecipes(itemObj)
+        const itemHasMultipleRecipes = hasMultipleRecipes(itemObj)
+        const isPurchaseable = itemObj?.purchase ? true : false
+
+        const hasRecipeAndPurchaseable = itemHasRecipes >= 1 && isPurchaseable
+
+        console.log("selected Item",itemObj)
+        // Maybe don't return anything if there is no selectedItem
+        return (
+            <div className="cooking-selected-item-wrapper">
+                <h3>Ingredient Details</h3>
+                {itemName && <>
+                    <h3>{itemName}</h3>
+                    {itemMethod && <p>Method: {itemMethod} ({getCookingRankByMethod(itemMethod)})</p>}
+                    {itemHasRecipes > 1 || hasRecipeAndPurchaseable && <p>Item has multiple recipes.</p>}
+                    {itemHasRecipes > 1 || hasRecipeAndPurchaseable && <p className='cooking-selected-item-recipes'>
+                        {itemObj.recipe?.ingame ? <span data-refer-name={itemName} data-refer-recipe="ingame">In-game</span> : null}
+                        {itemObj.recipe?.recipe1 ? <span data-refer-name={itemName} data-refer-recipe="recipe1">1</span> : null}
+                        {itemObj.recipe?.recipe2 ? <span data-refer-name={itemName} data-refer-recipe="recipe2">2</span> : null}
+                        {itemObj.recipe?.recipe3 ? <span data-refer-name={itemName} data-refer-recipe="recipe3">3</span> : null}
+                        {itemObj.recipe?.recipe4 ? <span data-refer-name={itemName} data-refer-recipe="recipe4">4</span> : null}
+                        {itemObj?.purchase ?  <span data-refer-name={itemName} data-refer-recipe="purchase">Purchase</span> : null}
+                    </p>
+                    }
+
+                    {/* For now just use recipe 1 I guess */}
+                    {<p>
+                        {itemObj.recipe?.[referRecipe]?.map((ingredient) => {
+                        return (`${ingredient?.name} (${ingredient?.percent}%)`)
+                    }).join(', ')}</p>}
+
+                    {/* Display Fishing if available */}
+                    {itemObj?.fishing && <p>Fishing: {itemObj.fishing.map(location => location).join(', ')}</p>}
+
+                    {/* Display Price if available */}
+                    {itemObj?.price && <p>Price: {itemObj.price} {itemObj?.priceCurrency ? " "+itemObj.priceCurrency : "g"}</p>}
+
+                    {/* Display NPCs to purchase from if available */}
+                    {itemObj?.purchase && <p>Purchase: {itemObj.purchase.map(npc => npc).join(', ')}</p>}
+
+                    {/* Display Gathering method if available */}
+                    {itemObj?.gathering && <p>Gathering: {itemObj.gathering}</p>}
+                    
+                    {/* Display drop locationo if available*/}
+                    {itemObj?.drop ? Array.isArray(itemObj.drop) ?<><p>Drop:</p> <ul>{itemObj.drop.map(drop => <li><p>{drop}</p></li>)}</ul></> : <p>Drop: {itemObj.drop}</p> : null}
+
+                    {/* Display Ingredient Hunting if available */}
+                    {itemObj?.ingredientHunting && <p>Drops from the Ingredient Hunting Skill</p>}
+
+                    {/* Display PartTime Jof if avaialbe */}
+                    {itemObj?.partTimeJob && <p>Part-time Job: {itemObj.partTimeJob} ({itemObj?.partTimeJobPT} Pts)</p>}
+                </>} 
+            </div>
+        )
+    }
+
+    function hasRecipes(itemObj){
+        return Object.keys(itemObj?.recipe ?? {} ).length
+    }
+
     function hasMultipleRecipes(itemObj){
         return Object.keys(itemObj?.recipe ?? {} ).length > 1 ? true : false
     }
+
 
     function renderMainRecipe()
     {
@@ -548,69 +657,7 @@ export default function Cooking(){
         )
     }
 
-    // Render sub ingredient details
-    function renderSelectedItem(){
 
-        const itemObj = getIngredientObjByName(selectedItemName)
-
-        if (selectedItemName && !itemObj){
-            return <div className="cooking-selected-item-wrapper">Error: {selectedItemName} is missing from database.</div>
-        }
-        else if(!itemObj){
-            return <></>
-        }
-
-        const itemMethod = itemObj?.method ?? ''
-        const hasRecipes = hasMultipleRecipes(itemObj)
-
-        console.log("selected Item",itemObj)
-        // Maybe don't return anything if there is no selectedItem
-        return (
-            <div className="cooking-selected-item-wrapper">
-                <h3>Ingredient Details</h3>
-                {selectedItemName && <>
-                    <h3>{selectedItemName}</h3>
-                    {itemMethod && <p>Method: {itemMethod} ({getCookingRankByMethod(itemMethod)})</p>}
-                    {hasRecipes && <p>Item has multiple recipes.</p>}
-                    {hasRecipes && <p className='cooking-selected-item-recipes'>
-                        {itemObj.recipe?.ingame ? <span>In-game</span> : null}
-                        {itemObj.recipe?.recipe1 ? <span>1</span> : null}
-                        {itemObj.recipe?.recipe2 ? <span>2</span> : null}
-                        {itemObj.recipe?.recipe3 ? <span>3</span> : null}
-                        {itemObj.recipe?.recipe4 ? <span>4</span> : null}
-                    </p>
-                    }
-
-                    {/* For now just use recipe 1 I guess */}
-                    {<p>
-                        {itemObj.recipe?.recipe1.map((ingredient) => {
-                        return (`${ingredient?.name} (${ingredient?.percent}%)`)
-                    }).join(', ')}</p>}
-
-                    {/* Display Fishing if available */}
-                    {itemObj?.fishing && <p>Fishing: {itemObj.fishing.map(location => location).join(', ')}</p>}
-
-                    {/* Display Price if available */}
-                    {itemObj?.price && <p>Price: {itemObj.price} {itemObj?.priceCurrency ? " "+itemObj.priceCurrency : "g"}</p>}
-
-                    {/* Display NPCs to purchase from if available */}
-                    {itemObj?.purchase && <p>Purchase: {itemObj.purchase.map(npc => npc).join(', ')}</p>}
-
-                    {/* Display Gathering method if available */}
-                    {itemObj?.gathering && <p>Gathering: {itemObj.gathering}</p>}
-                    
-                    {/* Display drop locationo if available*/}
-                    {itemObj?.drop ? Array.isArray(itemObj.drop) ?<><p>Drop:</p> <ul>{itemObj.drop.map(drop => <li><p>{drop}</p></li>)}</ul></> : <p>Drop: {itemObj.drop}</p> : null}
-
-                    {/* Display Ingredient Hunting if available */}
-                    {itemObj?.ingredientHunting && <p>Drops from the Ingredient Hunting Skill</p>}
-
-                    {/* Display PartTime Jof if avaialbe */}
-                    {itemObj?.partTimeJob && <p>Part-time Job: {itemObj.partTimeJob} ({itemObj?.partTimeJobPT} Pts)</p>}
-                </>} 
-            </div>
-        )
-    }
 
     return (
         <div className="cooking-page">
@@ -639,7 +686,6 @@ export default function Cooking(){
 
                     <SearchList 
                         searchInput={itemSearch} 
-                        searchIsFocused={searchIsFocused}
                         byNameIsChecked={byNameIsChecked}
                     />
                 </div>
