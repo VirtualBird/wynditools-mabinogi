@@ -8,7 +8,7 @@ function divWrapper(jsxElement){
     )
 }
 
-export default function SearchList({searchInput, searchIsFocused, byNameIsChecked}){
+export default function SearchList({searchInput, isListHidden, byNameIsChecked}){
     
     let contents = null
 
@@ -26,7 +26,7 @@ export default function SearchList({searchInput, searchIsFocused, byNameIsChecke
         if (list.length > 0){
             //  Return that list as elements
             //  but only if the search input is still focused
-            if (searchIsFocused){
+            if (!isListHidden){
 
                 const listElements = list.map(item =>{
                      return <li className="cooking-item-search-item" key={item.name}>
@@ -39,9 +39,9 @@ export default function SearchList({searchInput, searchIsFocused, byNameIsChecke
                     {listElements}
                 </ul>
             }
-            // Search Item Input Not focused
+            // If hiding List
             else{
-                contents = <p>Hiding {list.length} items. Click Item Search to show.</p>
+                contents = <p>Hiding {list.length} items.</p>
             }
         }
         else{

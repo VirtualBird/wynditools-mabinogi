@@ -112,6 +112,9 @@
     border-radius: 4px;
     padding: 0.2rem 0.4rem;
 
+    min-width: 10px;
+    text-align: center;
+
     &:hover{
         cursor: pointer;
         background-color: var(--color-primary-lighter);
