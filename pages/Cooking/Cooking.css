@@ -6,6 +6,13 @@
     box-sizing: border-box;
 }
 
+.cooking-page .container h2{
+    margin-top: 0.25em;
+}
+.cooking-page .container h3{
+    margin-top: 0.25em;
+}
+
 .cooking-search-options{
     text-align: center;
 }
@@ -54,11 +61,12 @@
 }
 
 .cooking-main-item-content,
+.cooking-selected-item-wrapper,
 .cooking-base-ingredients,
 .cooking-instructions,
 .recipe-tree{
-    border: 2px solid hotpink;
-    padding: 1em;
+    border: 1px solid hotpink;
+    padding: 0.5rem;
     border-radius: 8px;
     margin-block: 1em;
 }
@@ -73,20 +81,41 @@
     border-radius: 999px;
     display: inline-block;
     text-align: center;
-    border: 1px solid pink;
+    border: 1px solid var(--color-primary-light);
     padding: 0.25rem 0.5rem;
     min-width: 14px;
 }
 
 .cooking-main-item-recipes span.selected{
     color:white;
-    background-color: hotpink;
-    border-color: hotpink;
+    background-color: var(--color-primary);
+    border-color: var(--color-primary-darker);
+    
+    text-shadow: 0 1px 2px #00000020;
 }
 
 .cooking-main-item-recipes span:hover{
     cursor: pointer;
-    background-color: pink;
+    color: #333333;
+    background-color: var(--color-primary-lighter);
+}
+
+.cooking-selected-item-recipes{
+    display: flex;
+    gap: 0.25em;
+}
+
+.cooking-selected-item-recipes span{
+    font-size: 0.9rem;
+    display: inline-block;
+    border: 1px solid var(--color-primary);
+    border-radius: 4px;
+    padding: 0.2rem 0.4rem;
+
+    &:hover{
+        cursor: pointer;
+        background-color: var(--color-primary-lighter);
+    }
 }
 
 input#item-search{

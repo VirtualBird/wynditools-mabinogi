@@ -22,6 +22,7 @@ export default function Cooking(){
 
     const [mainItem, setMainItem] = React.useState(null)
     const [recipeTree, setRecipeTree] = React.useState()
+    const [selectedItemName, setSelectedItemName] = React.useState(null)
 
     React.useEffect(() => {
         function handleClick(event){
@@ -33,6 +34,7 @@ export default function Cooking(){
             else if (event.target.dataset.name){
                 console.log(event.target.dataset.name, "was Clicked")
                 // Do logic for displaying/setting selected item
+                setSelectedItemName(event.target.dataset.name)
             }
 
             console.log(event.target)
@@ -188,12 +190,16 @@ export default function Cooking(){
         }
     }
 
+    function hasMultipleRecipes(itemObj){
+        return Object.keys(itemObj?.recipe ?? {} ).length > 1 ? true : false
+    }
+
     function renderMainRecipe()
     {
         if (mainItem && recipeTree){
             //Uhh so I need to get the recipe tree
             const items = mainItem.recipe[recipeTree.selected]
-            console.log("Render this", items)
+            // console.log("Render this", items)
             // Might be possible for something to break here if the item returned has no name/percent
             return <div>
                 <p>Main Ingredients</p>
@@ -293,7 +299,7 @@ export default function Cooking(){
             {
                 return <div className='recipe-tree'>
                     <h2 className="recipe-tree-title">Recipe Tree</h2>
-                    <span>{getIngredientObjByName(recipeTree?.name).method}</span>
+                    <span>{getIngredientObjByName(recipeTree?.name)?.method}</span>
                     {recipeTree?.name ? <h3 className="recipe-tree-main-item">{recipeTree.name}</h3>: null}
                     {recipeTree?.nested ? <ul className="recipe-tree-main-list">{renderIngredientTree(recipeTree.nested)}</ul> : <div>{recipeTree.name}</div>}
                 </div>
@@ -384,7 +390,7 @@ export default function Cooking(){
     function instructionsArr(recipeTree, currentDepth = 0){
         const instructions = []
 
-        console.log("depth:", currentDepth, "Calling instructionsArr", recipeTree)
+        // console.log("depth:", currentDepth, "Calling instructionsArr", recipeTree)
 
         //  If looking through a Recipe Tree
         if (recipeTree)
@@ -397,12 +403,12 @@ export default function Cooking(){
                 //go through array and
                 //tf do I do uhh 
                 const something1 = recipeTree.map(item => {
-                    console.log("something1", item)
+                    // console.log("something1", item)
                     //  I need to be able to tell the difference between a recipeTree.nested and an instructionsArr
                     if (Object.hasOwn(item, "hasMultiple")){
-                        console.log("recipeTree.nested", item)
+                        // console.log("recipeTree.nested", item)
                         if (item.nested){
-                            console.log("Thats nested bro push that rizz in", item)
+                            // console.log("Thats nested bro push that rizz in", item)
                             // If this has nested properties need to push instructions
                             // instructions.push({
                             //     name: item.name,
@@ -412,14 +418,14 @@ export default function Cooking(){
 
                             //Ok so I HAVE to recursively go through from here
                             //do i just... call it on the item?
-                            console.log("I need to do something recursive here")
+                            // console.log("I need to do something recursive here")
                             instructions.push(...instructionsArr(item, currentDepth+1))
                         }
                         
                     }
                     // NOTE: is this even working?
                     else if (Object.hasOwn(item, "depthOccurances")){
-                        console.log("depthOccurances", item)
+                        // console.log("depthOccurances", item)
                     }
                     
                 })
@@ -428,15 +434,15 @@ export default function Cooking(){
 
                 // So.... I have to go through the nested property right? recursively
                 const thatNestedThang = instructionsArr(recipeTree.nested, currentDepth)
-                console.log("nested thang", thatNestedThang)
+                // console.log("nested thang", thatNestedThang)
                 if (thatNestedThang.length > 0)
                 {
-                    console.log("Push thatNestedThang")
+                    // console.log("Push thatNestedThang")
                     // Nestedthang is an array so... flatten it
                     instructions.push(...thatNestedThang)
                 }
                 else{
-                    console.log("ayy lmao nothing in thatNestedThang")
+                    // console.log("ayy lmao nothing in thatNestedThang")
                 }
                 
                 //  Check if the recipe is in instructions already.
@@ -472,7 +478,7 @@ export default function Cooking(){
                 })
             }
         }
-        console.log("instructionsArr returning arr", instructions)
+        // console.log("instructionsArr returning arr", instructions)
         return instructions
     }
 
@@ -480,7 +486,7 @@ export default function Cooking(){
     //  Actually this could be global util...? Maybe...
     function instructionsArrCompact(objectsArr){
         const compactArr = objectsArr.reduce((acc, curr) => {
-            console.log("comp", curr)
+            // console.log("comp", curr)
             const that = acc.find(item => item.name === curr.name)
 
             if (that){
@@ -500,7 +506,7 @@ export default function Cooking(){
     //  Sorts descending order
     function instSortHighestDepth(objectsArr){
         const sortedArr = objectsArr.sort((a, b) => Math.max(...b.depthOccurances) - Math.max(...a.depthOccurances) )
-        console.log("get sorted idiot", sortedArr)
+        // console.log("get sorted", sortedArr)
         return sortedArr
     }
     //umm.... we are just gonna use the recipe tree as parameter
@@ -518,7 +524,7 @@ export default function Cooking(){
 
         if (instructionsArr.length === 0)
         {
-            console.log("ayy mate you sending NOTHIN haha")
+            // console.log("ayy mate you sending NOTHIN haha")
             return null
         }
 
@@ -533,12 +539,75 @@ export default function Cooking(){
                 <h3>{mainItem.name}</h3>
                 <p>Grab all base ingredients before starting</p>
                 
-                
                 <p>Steps:</p>
                 <ol>
                     {content}
                 </ol>
                 {/* <p>{mainItem.name} MY MAN</p> */}
+            </div>
+        )
+    }
+
+    // Render sub ingredient details
+    function renderSelectedItem(){
+
+        const itemObj = getIngredientObjByName(selectedItemName)
+
+        if (selectedItemName && !itemObj){
+            return <div className="cooking-selected-item-wrapper">Error: {selectedItemName} is missing from database.</div>
+        }
+        else if(!itemObj){
+            return <></>
+        }
+
+        const itemMethod = itemObj?.method ?? ''
+        const hasRecipes = hasMultipleRecipes(itemObj)
+
+        console.log("selected Item",itemObj)
+        // Maybe don't return anything if there is no selectedItem
+        return (
+            <div className="cooking-selected-item-wrapper">
+                <h3>Ingredient Details</h3>
+                {selectedItemName && <>
+                    <h3>{selectedItemName}</h3>
+                    {itemMethod && <p>Method: {itemMethod} ({getCookingRankByMethod(itemMethod)})</p>}
+                    {hasRecipes && <p>Item has multiple recipes.</p>}
+                    {hasRecipes && <p className='cooking-selected-item-recipes'>
+                        {itemObj.recipe?.ingame ? <span>In-game</span> : null}
+                        {itemObj.recipe?.recipe1 ? <span>1</span> : null}
+                        {itemObj.recipe?.recipe2 ? <span>2</span> : null}
+                        {itemObj.recipe?.recipe3 ? <span>3</span> : null}
+                        {itemObj.recipe?.recipe4 ? <span>4</span> : null}
+                    </p>
+                    }
+
+                    {/* For now just use recipe 1 I guess */}
+                    {<p>
+                        {itemObj.recipe?.recipe1.map((ingredient) => {
+                        return (`${ingredient?.name} (${ingredient?.percent}%)`)
+                    }).join(', ')}</p>}
+
+                    {/* Display Fishing if available */}
+                    {itemObj?.fishing && <p>Fishing: {itemObj.fishing.map(location => location).join(', ')}</p>}
+
+                    {/* Display Price if available */}
+                    {itemObj?.price && <p>Price: {itemObj.price} {itemObj?.priceCurrency ? " "+itemObj.priceCurrency : "g"}</p>}
+
+                    {/* Display NPCs to purchase from if available */}
+                    {itemObj?.purchase && <p>Purchase: {itemObj.purchase.map(npc => npc).join(', ')}</p>}
+
+                    {/* Display Gathering method if available */}
+                    {itemObj?.gathering && <p>Gathering: {itemObj.gathering}</p>}
+                    
+                    {/* Display drop locationo if available*/}
+                    {itemObj?.drop ? Array.isArray(itemObj.drop) ?<><p>Drop:</p> <ul>{itemObj.drop.map(drop => <li><p>{drop}</p></li>)}</ul></> : <p>Drop: {itemObj.drop}</p> : null}
+
+                    {/* Display Ingredient Hunting if available */}
+                    {itemObj?.ingredientHunting && <p>Drops from the Ingredient Hunting Skill</p>}
+
+                    {/* Display PartTime Jof if avaialbe */}
+                    {itemObj?.partTimeJob && <p>Part-time Job: {itemObj.partTimeJob} ({itemObj?.partTimeJobPT} Pts)</p>}
+                </>} 
             </div>
         )
     }
@@ -576,6 +645,8 @@ export default function Cooking(){
                 </div>
 
                 {renderMainDish(mainItem)}
+
+                {renderSelectedItem()}
 
                 {/* {console.log("Here is the full tree",recipeTree)} */}
                 {recipeTree && renderBaseIngredients((countBaseIngredients(getBaseIngredientsFromRecipeTree(recipeTree))))}

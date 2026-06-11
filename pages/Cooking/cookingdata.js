@@ -12826,6 +12826,8 @@ export const ingredientsData =
     },
     {
         "name": "Chicken",
+        "partTimeJob": "Grocery Store",
+        "partTimeJobPT": 20,
         "ingredientHunting": true
     },
     {
@@ -12863,6 +12865,8 @@ export const ingredientsData =
     {
         "name": "Octopus",
         "itemDescription": "A mollusk with 8 legs. Easy for some people to mistake it as a monster. Don't be fooled, it's actually chewy and delicious.",
+        "partTimeJob": "Grocery Store",
+        "partTimeJobPT": 20,
         "ingredientHunting": true
     },
     {
@@ -12875,6 +12879,8 @@ export const ingredientsData =
     },
     {
         "name": "Poulp",
+        "partTimeJob": "Grocery Store",
+        "partTimeJobPT": 20,
         "ingredientHunting": true
     },
     {
@@ -12904,6 +12910,8 @@ export const ingredientsData =
     },
     {
         "name": "Turkey",
+        "partTimeJob": "Grocery Store",
+        "partTimeJobPT": 20,
         "ingredientHunting": true
     },
     {
@@ -13410,7 +13418,8 @@ export const ingredientsData =
         "price": 10
     },
     {
-        "name": "Fresh Honey"
+        "name": "Fresh Honey",
+        "drop": ["Use the 'Harvest Honey' option when right-clicking Honeycombs in your inventory. You can obtain them by hitting trees with hornet-like nests hanging from them in Corrib Valley, or from Homestead Wild Honey rocks. Honeycombs have a random but high chance of collecting Fresh Honey.", "Dropped by Hornets"]
     },
     {
         "name": "Belvast Whiskey",
@@ -13466,6 +13475,8 @@ export const ingredientsData =
                 "Wheat": 10
             }
         ],
+        "partTimeJob": "Grocery Store",
+        "partTimeJobPT": 40,
         "purchase": [
             "Glewyas"
         ],
@@ -13473,13 +13484,22 @@ export const ingredientsData =
         "priceCurrency": "Royal Court Food Delivery List 1"
     },
     {
+        "name": "Barley Flour",
+        "method": "Milling",
+        "materials": [
+            {
+                "Barley": 10
+            }
+        ],
+        "partTimeJob": "Grocery Store",
+        "partTimeJobPT": 40,
+    },
+    {
         "name": "Bottled Water",
         "method": "Gathering",
-        "drop": {
-            "gathering": [
-                "Equip an Empty Bottle and left-click on a well or a body of water"
-            ]
-        }
+        "gathering": [
+            "Equip an Empty Bottle and left-click on a well or a body of water"
+        ]
     },
     {
         "name": "Brifne Whiskey",
@@ -13575,7 +13595,9 @@ export const ingredientsData =
             "Emain Macha",
             "Belvast Island",
             "Scathach Beach"
-        ]
+        ],
+        "partTimeJob": "Grocery Store",
+        "partTimeJobPT": 20,
     },
     {
         "name": "Abb Neagh Carp",
@@ -13802,8 +13824,15 @@ export const ingredientsData =
             "Fishing Boat",
             "Scuabtuinne"
         ]
+    },
+    {
+        "name": "Milk",
+        "gathering": "Equip an Empty Bottle on the right hand, then left click on a Cow to gather milk."
+    },
+    {
+        "name": "Egg",
+        "gathering": "Eggs can be gathered by having nothing equipped in either hand and left-clicking on a hen."
     }
-
 ]
 
 // Updated all from caitinn on 2025-07-30
