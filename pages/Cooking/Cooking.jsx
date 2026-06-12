@@ -552,6 +552,8 @@ export default function Cooking(){
     // uncomment this if I need to check ingredients for all items existing in database
     // console.log(deepDiveCheckMissingIngredients())
 
+
+
     // And then heres a function for turning the baseIngredients list into a counted list as an object
     function countBaseIngredients(ingredientsArr){
         const baseIngredientsObj = {}
@@ -775,6 +777,7 @@ export default function Cooking(){
                     <SearchList 
                         searchInput={itemSearch} 
                         byNameIsChecked={byNameIsChecked}
+                        byIngredientIsChecked={byIngredientIsChecked}
                     />
                 </div>
 

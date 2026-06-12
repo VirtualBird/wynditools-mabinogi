@@ -189,3 +189,27 @@ function getRequiredCookingRankAll(itemObj)
 
     return compareRankHighest(currentRank, highestNestedRank)
 }
+
+//  REFACTOR NOTE: hey put this in cookingUtils.js later
+//  Returns an array of all Unique ingredients a recipe can use uses
+export function getAllUniqueIngredientsFromRecipe(objRecipeKey){
+    // Make sure to pass in the object's .recipe key as a parameter and not the Object itself!
+    //  Or alternative I could rewrite to check for recipe key but thats too much work
+    if (!objRecipeKey){
+        return null
+    }
+
+    const ingredientsArr = Object.values(objRecipeKey).flat().reduce((acc, curr) => {
+        // Remove duplicate ingredients
+        // WARNING: may fail if name property does not exist, maybe add guard against this?
+        // I tried idk if the ? helps
+        if (!acc.includes(curr?.name)){
+            acc.push(curr?.name)
+        }
+
+        return acc
+
+    }, [])
+
+    return ingredientsArr
+}

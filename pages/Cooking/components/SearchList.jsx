@@ -1,4 +1,5 @@
 import {ingredientsData} from '.././cookingdata.js'
+import { getAllUniqueIngredientsFromRecipe } from '.././cookingUtils.js'
 
 function divWrapper(jsxElement){
     return (
@@ -8,7 +9,7 @@ function divWrapper(jsxElement){
     )
 }
 
-export default function SearchList({searchInput, isListHidden, byNameIsChecked}){
+export default function SearchList({searchInput, isListHidden, byNameIsChecked, byIngredientIsChecked}){
     
     let contents = null
 
@@ -18,8 +19,21 @@ export default function SearchList({searchInput, isListHidden, byNameIsChecked})
         const list = ingredientsData.filter(item => {
             const foundByName = byNameIsChecked ? item.name.toLowerCase().includes(searchInput.toLowerCase()) : false
             // Implement by Ingredient later I can't do this yet
-            //const foundByIngredient = byIngredientIsChecked ? false : false
-            return foundByName
+
+            let foundByIngredient = false
+            //  If search by ingredient is checked
+            if (byIngredientIsChecked){
+                const uniqueItemsArr = getAllUniqueIngredientsFromRecipe(item?.recipe)
+                //  Check if this item is used as an ingredient for any of array items's recipes.
+                if (uniqueItemsArr){
+                    foundByIngredient = uniqueItemsArr.some(
+                        arrName => arrName.toLowerCase().startsWith(searchInput.toLowerCase())
+                    )
+                }
+
+            }
+            
+            return foundByName || foundByIngredient
         })
 
         //  If we found any items
