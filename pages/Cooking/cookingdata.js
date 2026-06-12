@@ -926,7 +926,7 @@ export const ingredientsData =
         "method": "Mix",
         "ingredients": [
             "Crepe",
-            "Whipped",
+            "Whipped Cream",
             "Fresh Honey"
         ],
         "recipe": {
@@ -936,7 +936,7 @@ export const ingredientsData =
                     "percent": 74
                 },
                 {
-                    "name": "Whipped",
+                    "name": "Whipped Cream",
                     "percent": 19
                 },
                 {
@@ -1958,14 +1958,14 @@ export const ingredientsData =
         "name": "Nares Cake Set",
         "method": "Mix",
         "ingredients": [
-            "Gateau Au Chocolate",
+            "Gateau Au Chocolat",
             "Rare Cheesecake",
             "Coconut Pound Cake"
         ],
         "recipe": {
             "recipe1": [
                 {
-                    "name": "Gateau Au Chocolate",
+                    "name": "Gateau Au Chocolat",
                     "percent": 30
                 },
                 {
@@ -3052,14 +3052,14 @@ export const ingredientsData =
         "name": "Butter Grilled Reef Lobster",
         "method": "Bake",
         "ingredients": [
-            "Reed Lobster",
+            "Reef Lobster",
             "Butter",
             "Garlic"
         ],
         "recipe": {
             "recipe1": [
                 {
-                    "name": "Reed Lobster",
+                    "name": "Reef Lobster",
                     "percent": 50
                 },
                 {
@@ -4564,7 +4564,7 @@ export const ingredientsData =
         "recipe": {
             "recipe1": [
                 {
-                    "name": "Hazelnut Mushroomr",
+                    "name": "Hazelnut Mushroom",
                     "percent": 50
                 },
                 {
@@ -6028,7 +6028,7 @@ export const ingredientsData =
         "recipe": {
             "recipe1": [
                 {
-                    "name": "Fried Buttom Mushrooms",
+                    "name": "Fried Button Mushrooms",
                     "percent": 60
                 },
                 {
@@ -6042,7 +6042,7 @@ export const ingredientsData =
             ],
             "ingame": [
                 {
-                    "name": "Fried Buttom Mushrooms",
+                    "name": "Fried Button Mushrooms",
                     "percent": 75
                 },
                 {
@@ -6594,7 +6594,7 @@ export const ingredientsData =
         "method": "Boil",
         "ingredients": [
             "Rice Cake Soup",
-            "White Race Cake",
+            "White Rice Cake",
             "Egg"
         ],
         "recipe": {
@@ -6604,7 +6604,7 @@ export const ingredientsData =
                     "percent": 70
                 },
                 {
-                    "name": "White Race Cake",
+                    "name": "White Rice Cake",
                     "percent": 20
                 },
                 {
@@ -10185,13 +10185,13 @@ export const ingredientsData =
         "name": "Juniper Jelly",
         "method": "Jam Making",
         "ingredients": [
-            "Juniper",
+            "Juniper Berry",
             "Sugar"
         ],
         "recipe": {
             "recipe1": [
                 {
-                    "name": "Juniper",
+                    "name": "Juniper Berry",
                     "percent": 30
                 },
                 {
@@ -13470,10 +13470,8 @@ export const ingredientsData =
     {
         "name": "Wheat Flour",
         "method": "Milling",
-        "materials": [
-            {
-                "Wheat": 10
-            }
+        materials: [
+            {name : "Wheat", quantity : 10}
         ],
         "partTimeJob": "Grocery Store",
         "partTimeJobPT": 40,
@@ -13486,10 +13484,8 @@ export const ingredientsData =
     {
         "name": "Barley Flour",
         "method": "Milling",
-        "materials": [
-            {
-                "Barley": 10
-            }
+        materials: [
+            {name : "Barley", quantity: 10}
         ],
         "partTimeJob": "Grocery Store",
         "partTimeJobPT": 40,
@@ -13825,6 +13821,7 @@ export const ingredientsData =
             "Scuabtuinne"
         ]
     },
+    // Adding some missing items
     {
         "name": "Milk",
         "gathering": "Equip an Empty Bottle on the right hand, then left click on a Cow to gather milk."
@@ -13832,6 +13829,199 @@ export const ingredientsData =
     {
         "name": "Egg",
         "gathering": "Eggs can be gathered by having nothing equipped in either hand and left-clicking on a hen."
+    },
+
+    {
+        name: "Potato",
+        gathering: "Can be dug up by equipping a Weeding Hoe and left-clicking on the leaves in a potato field."  
+    },
+    
+    {
+        name: "Cacao",
+        gathering: "Event Item purchasesable from Glenis"  
+    },
+    
+    {
+        name: "Dragon Flesh",
+        drop: [
+            "Black Dragon Raid", 
+            "White Dragon Raid", 
+            "Black Dragon Summon Scroll Seal Paper given as a possible instant reward.", 
+            "White Dragon Summon Scroll Seal Paper given as a possible instant reward.", 
+            "Town Messenger for 1,500 Field Raid Mementos."
+        ]
+    },
+    {
+        name: "Cake in a Box",
+        drop: [
+            "Site Owner Note: I don't know, this seems to be some specific event item around december? Wiki states 'Caravan Joe's Complete Gift Box' or something"
+        ]
+    },
+    {
+        name: "Cooking Potion",
+        method: "Potion Making",
+        ingredients: [
+            "Mandrake",
+            "Brown Pine Mushroom",
+            "Bottled Water"
+        ]
+    },
+    {
+        name: "Hazelnut Mushroom",
+        method: "Mushroom Gathering",
+        drop: [
+            "Hazelnut Mushrooms grow between 8:00 pm and 4:00 am in-game time, on all days of the week.", 
+            "Found in Dugald Aisle (Ulaid Forest), Karu Forest, and one of the islands in Scuabtuinne's Deception Reach Coral Forest. They can be picked by being empty-handed and clicking on them, or by using the 'Mushroom!' command with either a Spotted Deer or Short Horned Antelope pet summoned.",
+            "Can also be gathered from Homestead Hazelnut Mushroom nodes 3 times per real-time day when the time is right."
+        ],
+    },
+    {
+        name: "Peeled Bean",
+        method: "Handicraft",
+        ingredients: [
+            "Bean"
+        ]
+
+    },
+    {
+        name: "Peeled Bean Powder",
+        method: "Milling",
+        materials: [
+            {name : "Peeled Bean", quantity: 5}
+        ],
+
+    },
+    {
+        name: "Kraken Leg Meat",
+        location: "Tech Duinn: Awakened Abyssal Lord",
+        drop: "To gather Kraken food parts, first destroy at least one tentacle beside the Kraken Rex. Successfully destroying one or more tentacles will drop large hunks of tentacle on the ground",
+    },
+    {
+        name: "Roasted Bean Powder",
+        method: "Milling",
+        materials: [
+            {name : "Roasted Bean", quantity: 5}
+        ],
+
+    },
+    {
+        name: "Bean",
+        method: "Hoeing",
+        drop: "Use a Dull Weeding Hoe in a Potato field."
+    },
+    {
+        name: "Water-soaked Bean Powder",
+        method: "Milling",
+        materials: [
+            {name : "Water-soaked Bean", quantity: 5}
+        ],
+    },
+    {
+        name: "Wax",
+        partTimeJob: "Street Artist (NPC Hans 4x Wax each)",
+        partTimeJobPT: 60,
+        drop: "From a Honeycomb, which can be obtained from hitting trees with beehives at Corrib Valley or Homestead Wild Honey in a Homestead."
+    },
+    {
+        name: "Coconut",
+        drop: ["Hitting Props (Hit a palm or palmetto tree until a Coconut falls, in Rano at Qilla Base Camp or Scuabtuinne)", "Amethyst Beetle", "Emerald Beetle", "Topaz Beetle", "Young Emerald Beetle"]
+    },
+    {
+        name: "Corn",
+        method: "Harvesting",
+        drop: [
+            "Corn can be reaped by equipping a Sickle in the right hand and left-clicking on a bunch of corn stalks in a corn field. Corn fields can be located:", 
+            "near Emain Macha (in Uladh), to the west and north.",
+            "near Filia (in Connous), to the east.",
+            "near Qilla Base Camp (in Rano), to the northwest.",
+            "in Taillteann (in Uladh), to the southwest of Elf Taillteann Headquarters.",
+            "in Tara (in Uladh), just south of the southeastern part of town.",
+        ]
+    },
+    {
+        name: "Dragon Bone",
+        method: "Handicraft",
+        materials:  [
+            {name : "Dragon Bone Fragment", quantity : 2}
+        ],
+    },
+    {
+        name: "Black Dragon Heart",
+        drop:  [
+            "Black Dragon Raid", "Black Dragon Summon Scroll", "Town Messenger for 60,000 Field Raid Mementos."
+        ],
+    },
+    {
+        name: "Black Dragon Blood",
+        drop:  [
+            "Black Dragon Raid", "Black Dragon Summon Scroll Seal Paper given as a possible instant reward.", "Town Messenger for 3,000 Field Raid Mementos."
+        ],
+    },
+    {
+        name: "White Dragon Heart",
+        drop:  [
+            "White Dragon Raid", "White Dragon Summon Scroll", "Town Messenger for 60,000 Field Raid Mementos."
+        ],
+    },
+    {
+        name: "White Dragon Blood",
+        drop:  [
+            "White Dragon Raid", "White Dragon Summon Scroll Seal Paper given as a possible instant reward.", "Town Messenger for 3,000 Field Raid Mementos."
+        ],
+    },
+    
+    {
+        name: "Light Brown Pine Mushroom",
+        method: "Mushroom Gathering",
+        drop: "Brown Pine Mushrooms grow between 8:00 pm and 4:00 am in-game time, appearing only on weekdays, with greater abundance on Tuesday, Wednesday, and Thursday. Dugald Aisle and Karu Forest"
+    },
+    {
+        name: "Courcle Coffee Beans",
+        drop: "Hit a Courcle Coffee Tree until a Courcle Coffee Bean falls. These trees are numerous in the Herba Jungle. Look for them on a hill, south of the Jungle Tree Crest."
+    },
+    {
+        name: "Fresh Kraken Sucker",
+        location: "Tech Duinn: Awakened Abyssal Lord",
+        drop: "To gather Kraken food parts, first destroy at least one tentacle beside the Kraken Rex. Successfully destroying one or more tentacles will drop large hunks of tentacle on the ground",
+    },
+    {
+        name: "Giant Potato",
+        method: "Hoeing",
+        drop: "Hoeing in Potato Fields. Rare Drop.",
+    },
+    {
+        name: "Lipai Root",
+        method: "Fragmentation",
+        drop: "Obtain Lipai Flower during the Generation 24 (Ascension) quest: Root and Petal.",
+    },
+    {
+        name: "Magic Bean Powder",
+        method: "Milling",
+        materials:  [
+            {name : "Magic Bean", quantity : 5}
+        ],
+    },
+    {
+        name: "Nigari",
+        location:  "Magic Bean Dungeon (Alby)"
+    },
+    {
+        name: "Capelin",
+        fishing: ["Doki Doki Island", "Homestead Fishing Event - Using Candy Bait"]
+    },
+    {
+        name: "Kraken Ink",
+        location: "Tech Duinn: Awakened Abyssal Lord",
+        drop: "To gather Kraken food parts, first destroy at least one tentacle beside the Kraken Rex. Successfully destroying one or more tentacles will drop large hunks of tentacle on the ground",
+    },
+    {
+        name: "Antidote Potion",
+        method: "Potion Making",
+        materials: [
+            {name: "Bottled Water", quantity: 1},
+            {name: "Base Herb", quantity: 1},
+            {name: "Antidote Herb", quantity: 1},
+        ]
     }
 ]
 

@@ -71,6 +71,8 @@ export default function Cooking(){
     function handleItemSearchClick(itemName){
         const itemObj = getIngredientObjByName(itemName)
         setMainItem(itemObj)
+        // Perhaps clear selected item when you click an item to avoid confusion
+        setSelectedItemName(null)
     }
 
     function addReferToRecipes(itemName, recipe){
@@ -188,7 +190,7 @@ export default function Cooking(){
     function handleSearchInput(value){
         setItemSearch(value)
     }
-    
+
     //  This is the main dish selected
     function renderMainDish(item){
         if (item){
@@ -217,12 +219,29 @@ export default function Cooking(){
 
                 {item.recipe ? renderMainRecipe(): null}
 
+                {/* Display Materials list if available */}
+                {item?.materials && <ul>{item.materials.map(material => <li>{material?.quantity}x {material?.name}</li>)}</ul>}
+
                 {/* Display NPC Purchase location and price if available */}
                 {item.purchase ?? '' ? <p>Purchase from: {item.purchase.join(", ")} ({item.price ?? '-PRICE UNKNOWN-'}{itemCurrency})</p> : null}
 
                 {/* Display Fishing if available */}
                 {item?.fishing && <p>Fishing: {item.fishing.map(location => location).join(', ')}</p>}
 
+                {/* Display Gathering method if available */}
+                {item?.gathering && <p>Gathering: {item.gathering}</p>}
+                
+                {/* Display Location if available */}
+                {item?.location && <p>Location: {item.location}</p>}
+
+                {/* Display drop locationo if available*/}
+                {item?.drop ? Array.isArray(item.drop) ?<><p>Drop:</p> <ul>{item.drop.map(drop => <li><p>{drop}</p></li>)}</ul></> : <p>Drop: {item.drop}</p> : null}
+            
+                {/* Display Ingredient Hunting if available */}
+                {item?.ingredientHunting && <p>Drops from the Ingredient Hunting Skill</p>}
+
+                {/* Display PartTime Jof if avaialbe */}
+                {item?.partTimeJob && <p>Part-time Job: {item.partTimeJob} ({item?.partTimeJobPT} Pts)</p>}
             </div>
         }
         else{
@@ -249,6 +268,7 @@ export default function Cooking(){
         const isPurchaseable = itemObj?.purchase ? true : false
 
         const hasRecipeAndPurchaseable = itemHasRecipes >= 1 && isPurchaseable
+        const showMultipleRecipes = itemHasRecipes > 1 || (itemHasRecipes >= 1 && isPurchaseable)
 
         console.log("selected Item",itemObj)
         // Maybe don't return anything if there is no selectedItem
@@ -258,14 +278,14 @@ export default function Cooking(){
                 {itemName && <>
                     <h3>{itemName}</h3>
                     {itemMethod && <p>Method: {itemMethod} ({getCookingRankByMethod(itemMethod)})</p>}
-                    {itemHasRecipes > 1 || hasRecipeAndPurchaseable && <p>Item has multiple recipes.</p>}
-                    {itemHasRecipes > 1 || hasRecipeAndPurchaseable && <p className='cooking-selected-item-recipes'>
-                        {itemObj.recipe?.ingame ? <span data-refer-name={itemName} data-refer-recipe="ingame">In-game</span> : null}
-                        {itemObj.recipe?.recipe1 ? <span data-refer-name={itemName} data-refer-recipe="recipe1">1</span> : null}
-                        {itemObj.recipe?.recipe2 ? <span data-refer-name={itemName} data-refer-recipe="recipe2">2</span> : null}
-                        {itemObj.recipe?.recipe3 ? <span data-refer-name={itemName} data-refer-recipe="recipe3">3</span> : null}
-                        {itemObj.recipe?.recipe4 ? <span data-refer-name={itemName} data-refer-recipe="recipe4">4</span> : null}
-                        {itemObj?.purchase ?  <span data-refer-name={itemName} data-refer-recipe="purchase">Purchase</span> : null}
+                    {showMultipleRecipes && <p>Item has multiple recipes.</p>}
+                    {showMultipleRecipes && <p className='cooking-selected-item-recipes'>
+                        {itemObj.recipe?.ingame ? <span className={referRecipe === "ingame" ? "selected" : ""} data-refer-name={itemName} data-refer-recipe="ingame">In-game</span> : null}
+                        {itemObj.recipe?.recipe1 ? <span className={referRecipe === "recipe1" ? "selected" : ""} data-refer-name={itemName} data-refer-recipe="recipe1">1</span> : null}
+                        {itemObj.recipe?.recipe2 ? <span className={referRecipe === "recipe2" ? "selected" : ""} data-refer-name={itemName} data-refer-recipe="recipe2">2</span> : null}
+                        {itemObj.recipe?.recipe3 ? <span className={referRecipe === "recipe3" ? "selected" : ""} data-refer-name={itemName} data-refer-recipe="recipe3">3</span> : null}
+                        {itemObj.recipe?.recipe4 ? <span className={referRecipe === "recipe4" ? "selected" : ""} data-refer-name={itemName} data-refer-recipe="recipe4">4</span> : null}
+                        {itemObj?.purchase ?  <span className={referRecipe === "purchase" ? "selected" : ""} data-refer-name={itemName} data-refer-recipe="purchase">Purchase</span> : null}
                     </p>
                     }
 
@@ -274,6 +294,9 @@ export default function Cooking(){
                         {itemObj.recipe?.[referRecipe]?.map((ingredient) => {
                         return (`${ingredient?.name} (${ingredient?.percent}%)`)
                     }).join(', ')}</p>}
+
+                    {/* Display Materials list if available */}
+                    {itemObj?.materials && <ul>{itemObj.materials.map(material => <li>{material?.quantity}x {material?.name}</li>)}</ul>}
 
                     {/* Display Fishing if available */}
                     {itemObj?.fishing && <p>Fishing: {itemObj.fishing.map(location => location).join(', ')}</p>}
@@ -486,6 +509,49 @@ export default function Cooking(){
         return ingredientsArr
     }
 
+    //Literally do a full search through cookingData for missing ingredients
+    // I should probably put this function somewhere else its just a testing function
+    function deepDiveCheckMissingIngredients(){
+        const totalItems = ingredientsData.reduce((acc, curr) => {
+            const items = []
+                items.push(...curr?.recipe?.ingame?.map(item => item.name) ?? [])
+                items.push(...curr?.recipe?.recipe1?.map(item => item.name)?? [])
+                items.push(...curr?.recipe?.recipe2?.map(item => item.name)?? [])
+                items.push(...curr?.recipe?.recipe3?.map(item => item.name)?? [])
+                items.push(...curr?.recipe?.recipe4?.map(item => item.name)?? [])
+            
+            acc.push(...items)
+            return acc
+        } , [])
+
+        const reducedItems = totalItems.reduce((acc, curr) => {
+            const ingredientKey = acc.find(item => item === curr)
+
+            if (ingredientKey){
+                // egg do nothing
+            }
+            else{   
+                //  NOTE: Maybe be careful with push(curr) its technically pushing by reference and not by value
+                acc.push(curr)
+            }
+
+            return acc
+        }, [])
+
+        reducedItems.forEach(item => {
+            if (!ingredientsData.some(ingitem => ingitem.name === item)){
+                
+                console.warn(item, " is Missing")
+                
+                return
+            }
+        })
+
+        return reducedItems
+    }
+    // uncomment this if I need to check ingredients for all items existing in database
+    // console.log(deepDiveCheckMissingIngredients())
+
     // And then heres a function for turning the baseIngredients list into a counted list as an object
     function countBaseIngredients(ingredientsArr){
         const baseIngredientsObj = {}
@@ -528,18 +594,16 @@ export default function Cooking(){
             //  If looking through an array of items
             if (Array.isArray(recipeTree)){
 
-                const something1 = recipeTree.map(item => {
-                    console.log("something1", item)
+                const itemObj = recipeTree.map(item => {
+                    // console.log("itemObj", item)
 
                     //  I need to be able to tell the difference between a recipeTree.nested and an instructionsArr
                     if (Object.hasOwn(item, "hasMultiple")){
                         // console.log("recipeTree.nested", item)
                         if (item.nested){
                             // console.log("Thats nested bro push that rizz in", item)
-                            // If this has nested properties need to push instructions
 
-                            //Ok so I HAVE to recursively go through from here
-                            //do i just... call it on the item?
+                            // If this has nested properties, have to recursively call
                             instructions.push(...instructionsArr(item, currentDepth+1))
                         }
                         
@@ -599,20 +663,23 @@ export default function Cooking(){
             }
         }
         // console.log("instructionsArr returning arr", instructions)
+        // And if I recall correctly, this should flatten all ingredients into an array to be sorted later
         return instructions
     }
 
     //  Might be a better name for this
     //  Actually this could be global util...? Maybe...
+    //  Anyway, this just consolidates the instructions array and groups items that have duplicate occurances
     function instructionsArrCompact(objectsArr){
         const compactArr = objectsArr.reduce((acc, curr) => {
             // console.log("comp", curr)
-            const that = acc.find(item => item.name === curr.name)
+            const ingredientKey = acc.find(item => item.name === curr.name)
 
-            if (that){
-                that.depthOccurances.push(...curr.depthOccurances)
+            if (ingredientKey){
+                ingredientKey.depthOccurances.push(...curr.depthOccurances)
             }
-            else{   //  Maybe be careful with push(curr) its technically pushing by reference and not by value
+            else{   
+                //  NOTE: Maybe be careful with push(curr) its technically pushing by reference and not by value
                 acc.push(curr)
             }
 
@@ -621,6 +688,14 @@ export default function Cooking(){
         }, [])
 
         return compactArr
+    }
+
+    //  Just goes through array and removes items that were refered to as purchase
+    function removePurchasedItemsInInstructions(objectsArr){
+        console.log("before remove", objectsArr)
+        const removedPurchasedArr = objectsArr.filter(obj => getReferToRecipeByName(obj.name) !== "purchase")
+        console.log("removed", removedPurchasedArr)
+        return removedPurchasedArr
     }
 
     //  Sorts descending order
@@ -632,7 +707,9 @@ export default function Cooking(){
     //umm.... we are just gonna use the recipe tree as parameter
     function getCookingInstructionsByRecipeTree(recipeTree){
         const rawInstructionsArr = instructionsArr(recipeTree)
-        const compactInstructionsArr = instructionsArrCompact(rawInstructionsArr)
+        // Remove purchased items from the instructions
+        const removePurchasedItemsArr = removePurchasedItemsInInstructions(rawInstructionsArr)
+        const compactInstructionsArr = instructionsArrCompact(removePurchasedItemsArr)
         const sortedInstructionsArr = instSortHighestDepth(compactInstructionsArr)
 
         return sortedInstructionsArr
@@ -656,7 +733,7 @@ export default function Cooking(){
             <div className='cooking-instructions'>
                 <h2>Cooking Instructions</h2>
                 <p className="italic">*note: non-cooking skill methods like milling/gathering/purchase are not supported yet</p>
-                <h3>{mainItem.name}</h3>
+                <h3>{mainItem?.name}</h3>
                 <p>Grab all base ingredients before starting</p>
                 
                 <p>Steps:</p>

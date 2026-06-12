@@ -83,7 +83,7 @@
     text-align: center;
     border: 1px solid var(--color-primary-light);
     padding: 0.25rem 0.5rem;
-    min-width: 14px;
+    min-width: 12px;
 }
 
 .cooking-main-item-recipes span.selected{
@@ -114,6 +114,12 @@
 
     min-width: 10px;
     text-align: center;
+
+    &.selected{
+        color:white;
+        background-color: var(--color-primary);
+        border-color: var(--color-primary-darker);
+    }
 
     &:hover{
         cursor: pointer;
