@@ -16,6 +16,7 @@ export default function Cooking(){
 
     const [byNameIsChecked, setByNameIsChecked] = React.useState(true)
     const [byIngredientIsChecked, setByIngredientIsChecked] = React.useState(false)
+    const [byPreferPurchaseIsChecked, setPreferPurchaseIsChecked] = React.useState(false)
 
     const [itemSearch, setItemSearch] = React.useState("")
     const [searchIsFocused, setSearchFocused] = useState(false)
@@ -25,9 +26,10 @@ export default function Cooking(){
     const [selectedItemName, setSelectedItemName] = React.useState(null)
     const [referToRecipes, setReferToRecipes] = React.useState({})
 
-
+console.log("render", byPreferPurchaseIsChecked)
     React.useEffect(() => {
         function handleClick(event){
+            console.log("listener", byPreferPurchaseIsChecked)
             //  If user clicked on item in ItemSearch List
             if (event.target.classList.contains('cooking-item-search-name')){
                 console.log("Clicked item in list")
@@ -65,8 +67,10 @@ export default function Cooking(){
     React.useEffect(() => {
         if (!mainItem) return
 
+        // Not sure if I want to keep this here, maybe throw it back into handleItemSearchClick
         setRecipeTree(getRecipeTree(mainItem))
     },[mainItem, referToRecipes])
+
 
     function handleItemSearchClick(itemName){
         const itemObj = getIngredientObjByName(itemName)
@@ -77,12 +81,35 @@ export default function Cooking(){
 
     function addReferToRecipes(itemName, recipe){
         console.log("adding", itemName, recipe);
+        console.log(itemName, getReferToRecipeByName(itemName), "purchase", getReferToRecipeByName(itemName) === "purchase")
         setReferToRecipes(prev => ({...prev, [itemName]: recipe}) )
+            
+        //  Some logic for untoggling prefer purchase
+        //  If preferPuchase is checked
+        if (byPreferPurchaseIsChecked) {
+            //  And the a recipe is being changed to one that isn't "purchase"
+            
+            if (recipe !== "purchase"){
+                
+                //  And the recipe that was previously set to from purchase to something else
+                if (getReferToRecipeByName(itemName) === "purchase"){
+                    // uncheck preferbypurchase
+                    setPreferPurchaseIsChecked(false)
+                }
+            }
+        }
+
+        // kind of want to add a check fo if the refer
     }
 
     function getReferToRecipeByName(itemName){
         // obj lookup recipe of itemName if it exists, default to recipe1 if doesn't exist
-        const referRecipe = referToRecipes?.[itemName] ?? "recipe1"
+        let referRecipe = referToRecipes?.[itemName]
+        if (!referRecipe){
+            console.trace("Refer: ", itemName, " ran into error defaulting to recipe1")
+            referRecipe = "recipe1"
+        }
+        // console.log("getReferToRecipeByName", itemName, referRecipe)
         
         if (referRecipe){
             return referRecipe
@@ -95,7 +122,6 @@ export default function Cooking(){
     function getRecipeTree(itemObj, selected = "recipe1"){
         const recipe = {}
         const selectedRecipe = getReferToRecipeByName(itemObj.name)
-        console.log(selectedRecipe)
         // If Recipe property exists
         if (itemObj?.recipe){
             // Check for instances of other recipes
@@ -187,6 +213,18 @@ export default function Cooking(){
         setByIngredientIsChecked(prev => !prev)
     }
 
+    function handleOnChangePreferPuchase(){
+        // Using this to calculate changed flag based on preferPurchase
+        const nextFlag = !byPreferPurchaseIsChecked
+
+        setPreferPurchaseIsChecked(prev => !prev)
+
+        //if state is true
+        if (nextFlag === true){
+            setAllRecipesToPurchase()
+        }
+    }
+
     function handleSearchInput(value){
         setItemSearch(value)
     }
@@ -194,8 +232,12 @@ export default function Cooking(){
     //  This is the main dish selected
     function renderMainDish(item){
         if (item){
-
             let itemCurrency = item?.priceCurrency ? ` ${item?.priceCurrency}` : "g"
+
+            const itemHasRecipes = hasRecipes(item)
+            const isPurchaseable = item?.purchase ? true : false
+            const hasRecipeAndPurchaseable = itemHasRecipes >= 1 && isPurchaseable
+            const showMultipleRecipes = itemHasRecipes > 1 || (itemHasRecipes >= 1 && isPurchaseable)
 
             const hasMultipleRecipes = Object.keys(item.recipe ?? {}).length > 1 ? true : false
             const hasRecipeAndPrice = null
@@ -206,8 +248,8 @@ export default function Cooking(){
                 {item.name ? <h3>{item.name}</h3> : <h2>Undefined Item Name</h2>}
                 {item.method ? <p>{`${item.method} (${getCookingRankByMethod(item.method)} Cooking)`}</p> : null}
 
-                {hasMultipleRecipes ? <p>This item has multiple known recipes</p> : null}
-                {hasMultipleRecipes ? <p className='cooking-main-item-recipes'>
+                {showMultipleRecipes ? <p>This item has multiple known recipes</p> : null}
+                {showMultipleRecipes ? <p className='cooking-main-item-recipes'>
                     {item.recipe?.ingame ? <span className={referRecipe === "ingame" ? "selected" : ""} onClick={() => addReferToRecipes(item.name, "ingame")}>In-game</span> : null}
                     {item.recipe?.recipe1 ? <span className={referRecipe === "recipe1" ? "selected" : ""} onClick={() => addReferToRecipes(item.name, "recipe1")}>1</span> : null}
                     {item.recipe?.recipe2 ? <span className={referRecipe === "recipe2" ? "selected" : ""} onClick={() => addReferToRecipes(item.name, "recipe2")}>2</span> : null}
@@ -270,7 +312,7 @@ export default function Cooking(){
         const hasRecipeAndPurchaseable = itemHasRecipes >= 1 && isPurchaseable
         const showMultipleRecipes = itemHasRecipes > 1 || (itemHasRecipes >= 1 && isPurchaseable)
 
-        console.log("selected Item",itemObj)
+        // console.log("selected Item",itemObj)
         // Maybe don't return anything if there is no selectedItem
         return (
             <div className="cooking-selected-item-wrapper">
@@ -320,6 +362,16 @@ export default function Cooking(){
                     {itemObj?.partTimeJob && <p>Part-time Job: {itemObj.partTimeJob} ({itemObj?.partTimeJobPT} Pts)</p>}
                 </>} 
             </div>
+        )
+    }
+
+    function setAllRecipesToPurchase(){
+        ingredientsData.forEach(item => 
+            {
+                if (item?.purchase && item?.recipe){
+                    addReferToRecipes(item.name, "purchase")
+                }
+            }
         )
     }
 
@@ -694,9 +746,9 @@ export default function Cooking(){
 
     //  Just goes through array and removes items that were refered to as purchase
     function removePurchasedItemsInInstructions(objectsArr){
-        console.log("before remove", objectsArr)
+        // console.log("before remove", objectsArr)
         const removedPurchasedArr = objectsArr.filter(obj => getReferToRecipeByName(obj.name) !== "purchase")
-        console.log("removed", removedPurchasedArr)
+        // console.log("removed", removedPurchasedArr)
         return removedPurchasedArr
     }
 
@@ -781,16 +833,22 @@ export default function Cooking(){
                     />
                 </div>
 
-                {renderMainDish(mainItem)}
+                <div className='cooking-recipe-options'>
+                    <p>Recipe Options</p>
+                    <input type="checkbox" id="auto-select-purchaseable" name="auto-select-purchaseable" value={byPreferPurchaseIsChecked} checked={byPreferPurchaseIsChecked} onChange={handleOnChangePreferPuchase}></input>
+                    <label htmlFor='auto-select-purchaseable'>Auto-select purchasable ingredients</label>
+                </div>
 
-                {renderSelectedItem()}
+                {mainItem && renderMainDish(mainItem)}
+
+                {selectedItemName && renderSelectedItem()}
 
                 {/* {console.log("Here is the full tree",recipeTree)} */}
                 {recipeTree && renderBaseIngredients((countBaseIngredients(getBaseIngredientsFromRecipeTree(recipeTree))))}
 
-                {renderCookingInstructions(recipeTree)}
+                {recipeTree && renderCookingInstructions(recipeTree)}
 
-                {renderIngredientTree(recipeTree)}
+                {recipeTree && renderIngredientTree(recipeTree)}
 
                 {/* {getBaseIngredientsFromRecipeTree(recipeTree)} */}
                 
