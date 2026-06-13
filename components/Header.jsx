@@ -12,8 +12,8 @@ export default function Header(){
         // Don't bother attaching event listener if the Menu Button isn't open
         if (!isOpen) return
         
-
         console.log("mounting click event for menu")
+        
         function handleClick(event){
             if (!menuBtnRef.current?.contains(event.target)){
                 setOpen(false)

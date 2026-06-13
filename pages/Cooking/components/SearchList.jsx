@@ -20,6 +20,7 @@ export default function SearchList({searchInput, isListHidden, byNameIsChecked, 
             const foundByName = byNameIsChecked ? item.name.toLowerCase().includes(searchInput.toLowerCase()) : false
             // Implement by Ingredient later I can't do this yet
 
+            // Yeah I don't know if I can make this more compact without complicating the logic
             let foundByIngredient = false
             //  If search by ingredient is checked
             if (byIngredientIsChecked){

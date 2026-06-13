@@ -172,4 +172,33 @@ input#item-search{
         /* 16px font size to prevent mobile zoom behaviour */
         font-size: 1rem;
     }
+
+    .cooking-item-search-method{
+        display: none;
+    }
+
+    .cooking-item-search-name{
+        padding: 1rem 1rem;
+        font-size: 1rem;
+    }
+
+    .cooking-item-search-list{
+        max-height: 60vh;
+        max-height: 60dvh;
+    }
+
+    .cooking-page label{
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+    }
+
+    .cooking-page label span{
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    input#item-search{
+        width: 100%;
+    }
 }

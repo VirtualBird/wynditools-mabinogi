@@ -102,11 +102,14 @@ console.log("render", byPreferPurchaseIsChecked)
         // kind of want to add a check fo if the refer
     }
 
+    // Returns string of recipe being used in referToRecipe state via itemName
     function getReferToRecipeByName(itemName){
-        // obj lookup recipe of itemName if it exists, default to recipe1 if doesn't exist
+        
         let referRecipe = referToRecipes?.[itemName]
+
+        // obj lookup recipe of itemName if it exists, default to "recipe1" if doesn't exist
         if (!referRecipe){
-            console.trace("Refer: ", itemName, " ran into error defaulting to recipe1")
+            // console.trace("Refer: ", itemName, " ran into error defaulting to recipe1")
             referRecipe = "recipe1"
         }
         // console.log("getReferToRecipeByName", itemName, referRecipe)
@@ -808,15 +811,20 @@ console.log("render", byPreferPurchaseIsChecked)
                 <div className="cooking-search-options">
                     <p>Search Options</p>
 
-                    <input type="checkbox" id="by-name" name="by-name" value={byNameIsChecked} checked={byNameIsChecked} onChange={handleOnChange}/>
-                    <label htmlFor="by-name">By name</label>
-                    <input type="checkbox" id="by-ingredient" name="by-ingredient" value={byIngredientIsChecked} checked={byIngredientIsChecked} onChange={handleOnChangeByIngredient}/>
-                    <label htmlFor="by-ingredient">By ingredient</label>
+                    <label htmlFor="by-name">
+                        <input type="checkbox" id="by-name" name="by-name" value={byNameIsChecked} checked={byNameIsChecked} onChange={handleOnChange}/>
+                        By name
+                    </label>
+                    <label htmlFor="by-ingredient">
+                        <input type="checkbox" id="by-ingredient" name="by-ingredient" value={byIngredientIsChecked} checked={byIngredientIsChecked} onChange={handleOnChangeByIngredient}/>
+                        By ingredient
+                    </label>
 
                 </div>
 
                 <div className="cooking-item-search">
-                    <label htmlFor="item-search">Item Search</label>
+                    <label htmlFor="item-search">
+                        <span>Item Search</span>
                     <input 
                         type="text" 
                         onFocus={() => setSearchFocused(true)}
@@ -825,6 +833,7 @@ console.log("render", byPreferPurchaseIsChecked)
                         value={itemSearch} 
                         onChange={(e) => handleSearchInput(e.target.value)}
                     />
+                    </label>
 
                     <SearchList 
                         searchInput={itemSearch} 
@@ -835,8 +844,10 @@ console.log("render", byPreferPurchaseIsChecked)
 
                 <div className='cooking-recipe-options'>
                     <p>Recipe Options</p>
+                    <label htmlFor='auto-select-purchaseable'>
                     <input type="checkbox" id="auto-select-purchaseable" name="auto-select-purchaseable" value={byPreferPurchaseIsChecked} checked={byPreferPurchaseIsChecked} onChange={handleOnChangePreferPuchase}></input>
-                    <label htmlFor='auto-select-purchaseable'>Auto-select purchasable ingredients</label>
+                        Auto-select purchasable ingredients
+                    </label>
                 </div>
 
                 {mainItem && renderMainDish(mainItem)}
