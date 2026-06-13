@@ -41,13 +41,13 @@ console.log("render", byPreferPurchaseIsChecked)
                 setSelectedItemName(event.target.dataset.name)
             }
             // If user clicked on span to change recipe
-            else if (event.target.dataset.referName && event.target.dataset.referRecipe){
-                const itemReferName = event.target.dataset.referName
-                const itemReferRecipe = event.target.dataset.referRecipe
+            // else if (event.target.dataset.referName && event.target.dataset.referRecipe){
+            //     const itemReferName = event.target.dataset.referName
+            //     const itemReferRecipe = event.target.dataset.referRecipe
 
-                console.log(itemReferName, itemReferRecipe, "clicked")
-                addReferToRecipes(itemReferName, itemReferRecipe)
-            }
+            //     console.log(itemReferName, itemReferRecipe, "clicked")
+            //     addReferToRecipes(itemReferName, itemReferRecipe)
+            // }
 
             console.log(event.target)
         }
@@ -255,7 +255,7 @@ console.log("render", byPreferPurchaseIsChecked)
                     {item.recipe?.recipe2 ? <span className={referRecipe === "recipe2" ? "selected" : ""} onClick={() => addReferToRecipes(item.name, "recipe2")}>2</span> : null}
                     {item.recipe?.recipe3 ? <span className={referRecipe === "recipe3" ? "selected" : ""} onClick={() => addReferToRecipes(item.name, "recipe3")}>3</span> : null}
                     {item.recipe?.recipe4 ? <span className={referRecipe === "recipe4" ? "selected" : ""} onClick={() => addReferToRecipes(item.name, "recipe4")}>4</span> : null}
-                    {item?.purchase ?  <span className={referRecipe === "purchase" ? "selected" : ""} data-refer-name={item.name} data-refer-recipe="purchase">Purchase</span> : null}
+                    {item?.purchase ?  <span className={referRecipe === "purchase" ? "selected" : ""} onClick={() => addReferToRecipes(item.name, "purchase")} data-refer-name={item.name} data-refer-recipe="purchase">Purchase</span> : null}
 
                     </p> : null}
 
@@ -322,12 +322,12 @@ console.log("render", byPreferPurchaseIsChecked)
                     {itemMethod && <p>Method: {itemMethod} ({getCookingRankByMethod(itemMethod)})</p>}
                     {showMultipleRecipes && <p>Item has multiple recipes.</p>}
                     {showMultipleRecipes && <p className='cooking-selected-item-recipes'>
-                        {itemObj.recipe?.ingame ? <span className={referRecipe === "ingame" ? "selected" : ""} data-refer-name={itemName} data-refer-recipe="ingame">In-game</span> : null}
-                        {itemObj.recipe?.recipe1 ? <span className={referRecipe === "recipe1" ? "selected" : ""} data-refer-name={itemName} data-refer-recipe="recipe1">1</span> : null}
-                        {itemObj.recipe?.recipe2 ? <span className={referRecipe === "recipe2" ? "selected" : ""} data-refer-name={itemName} data-refer-recipe="recipe2">2</span> : null}
-                        {itemObj.recipe?.recipe3 ? <span className={referRecipe === "recipe3" ? "selected" : ""} data-refer-name={itemName} data-refer-recipe="recipe3">3</span> : null}
-                        {itemObj.recipe?.recipe4 ? <span className={referRecipe === "recipe4" ? "selected" : ""} data-refer-name={itemName} data-refer-recipe="recipe4">4</span> : null}
-                        {itemObj?.purchase ?  <span className={referRecipe === "purchase" ? "selected" : ""} data-refer-name={itemName} data-refer-recipe="purchase">Purchase</span> : null}
+                        {itemObj.recipe?.ingame ? <span className={referRecipe === "ingame" ? "selected" : ""} onClick={() => addReferToRecipes(itemName, "ingame")} data-refer-name={itemName} data-refer-recipe="ingame">In-game</span> : null}
+                        {itemObj.recipe?.recipe1 ? <span className={referRecipe === "recipe1" ? "selected" : ""} onClick={() => addReferToRecipes(itemName, "recipe1")} data-refer-name={itemName} data-refer-recipe="recipe1">1</span> : null}
+                        {itemObj.recipe?.recipe2 ? <span className={referRecipe === "recipe2" ? "selected" : ""} onClick={() => addReferToRecipes(itemName, "recipe2")} data-refer-name={itemName} data-refer-recipe="recipe2">2</span> : null}
+                        {itemObj.recipe?.recipe3 ? <span className={referRecipe === "recipe3" ? "selected" : ""} onClick={() => addReferToRecipes(itemName, "recipe3")} data-refer-name={itemName} data-refer-recipe="recipe3">3</span> : null}
+                        {itemObj.recipe?.recipe4 ? <span className={referRecipe === "recipe4" ? "selected" : ""} onClick={() => addReferToRecipes(itemName, "recipe4")} data-refer-name={itemName} data-refer-recipe="recipe4">4</span> : null}
+                        {itemObj?.purchase ?  <span className={referRecipe === "purchase" ? "selected" : ""} onClick={() => addReferToRecipes(itemName, "purchase")} data-refer-name={itemName} data-refer-recipe="purchase">Purchase</span> : null}
                     </p>
                     }
 
