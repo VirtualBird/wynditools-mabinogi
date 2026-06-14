@@ -160,10 +160,11 @@ input#item-search{
 
 .cooking-clickable-item{
     cursor: pointer;
+    transition: color 0.2s;
 
     &:hover{
         color: var(--color-primary-darker);
-        transition: 0.3s;
+        transition: color 0s;
     }
 }
 
