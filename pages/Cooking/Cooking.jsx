@@ -7,6 +7,7 @@ import {
 
 import SearchList from './components/SearchList.jsx'
 import ClickableItemText from './components/ClickableItemText.jsx'
+import RatioBar from './components/RatioBar.jsx'
 
 import './Cooking.css'
 
@@ -850,12 +851,14 @@ console.log("render", byPreferPurchaseIsChecked)
                     </label>
                 </div>
 
-                {mainItem && renderMainDish(mainItem)}
+                <RatioBar />
 
-                {selectedItemName && renderSelectedItem()}
+                {mainItem && renderMainDish(mainItem)}
 
                 {/* {console.log("Here is the full tree",recipeTree)} */}
                 {recipeTree && renderBaseIngredients((countBaseIngredients(getBaseIngredientsFromRecipeTree(recipeTree))))}
+
+                {selectedItemName && renderSelectedItem()}
 
                 {recipeTree && renderCookingInstructions(recipeTree)}
 

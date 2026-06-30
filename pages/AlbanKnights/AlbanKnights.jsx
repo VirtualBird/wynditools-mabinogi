@@ -1,8 +1,9 @@
 import React from "react"
 import { albanKnightStonesData as stonesData } from "./AlbanKnightsData"
 import "./AlbanKnights.css"
+import { toPercent } from "../../src/utils/utils"
 
-
+import MeterThreshold from "../../components/MeterThreshold/MeterThreshold"
 
 export default function(){
 
@@ -58,6 +59,7 @@ export default function(){
         }
     }
 
+    // Gets current score
     function addAll(){
         const yellowValue = yellow?.value ? yellow.value : 0;
         const redValue = red?.value ? red.value : 0;
@@ -167,11 +169,6 @@ export default function(){
         }
     }
 
-    //  takes 2 values returns a percentage as a string
-    function calcAsPercent(value, maxValue){
-        return String(Number(value) / Number(maxValue) *100) + "%"
-    }
-
     function isTargetScorePossibleWithStone(stone){
 
         const highestStonesCopy = {...highestStones}
@@ -260,17 +257,27 @@ export default function(){
                     </ul>
                 </div>
 
+                <MeterThreshold 
+                    mainValue={addAll()} 
+                    minLabel="C" 
+                    thresholds={[{value: 70, label: "B"}, {value: 100, label: "A"}, {value: 130, label: "S"}, {value: 190, label: "SS"}]} 
+                    maxValue={220}
+                    maxWidth="500px"
+                    backgroundColor={isTargetScoreMet() ? "#00ff00aa" : "#ff0000aa"}
+                >
+                </MeterThreshold>
+
                 {/* Might be better to turn this into a reusable component and not hardcoded */}
-                <div className="meter-component">
+                {/* <div className="meter-component">
                     <div className="meter-component-containers">
-                        <div className="meter-component-current" style={{"width" : calcAsPercent(addAll(), 220), "backgroundColor": isTargetScoreMet() ? "#00ff00aa" : "#ff0000aa"}}></div>
+                        <div className="meter-component-current" style={{"width" : toPercent(addAll(), 220), "backgroundColor": isTargetScoreMet() ? "#00ff00aa" : "#ff0000aa"}}></div>
                         <div><p>C</p></div>
                         <div className={`${addAll() < 70 ? "fade" : ""}`}><p>B</p></div>
                         <div className={`${addAll() < 100 ? "fade" : ""}`}><p>A</p></div>
                         <div className={`${addAll() < 130 ? "fade" : ""}`}><p>S</p></div>
                         <div className={`${addAll() < 190 ? "fade" : ""}`}><p>SS</p></div>
                     </div>
-                </div>
+                </div> */}
 
                 <div className={`alban-knights-reward-container ${isTargetScoreMet() ? "" : "red"}`}>
                     <h3>Current Alban Knights Reward Tier</h3>
@@ -279,7 +286,8 @@ export default function(){
                         <h3 className={`${isTargetScoreMet() ? "" : "red"}`}>{addAll()}</h3>
                     </div>
                 </div>
-<div className="stones-value-wrapper">
+
+                <div className="stones-value-wrapper">
                     <div>
                         <p>Yellow</p>
                         <p className="stone-active-value">{yellow?.value ? yellow.value : 0}</p>

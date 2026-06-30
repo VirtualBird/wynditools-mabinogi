@@ -4,6 +4,7 @@ import {useState} from "react"
 import Slider from "./components/Slider"
 import "./WineMaking.css"
 import Tooltip from "../../components/Tooltip/Tooltip"
+import MeterThreshold from "../../components/MeterThreshold/MeterThreshold"
 
 export default function Wine_Making(){
 
@@ -96,13 +97,11 @@ export default function Wine_Making(){
                     
                 </div>
 
+                
                 <div className="score-details">
                     <p>Wine score requirements</p>
-                    <ul>
-                        <li style={{ opacity: scoreIsAboveValue(60000) ? "1" : "0.3"}}>60000</li>
-                        <li style={{ opacity: scoreIsAboveValue(120000) ? "1" : "0.3"}}>120000</li>
-                        <li style={{ opacity: scoreIsAboveValue(160000) ? "1" : "0.3"}}>160000</li>
-                    </ul>
+                    <MeterThreshold mainValue={calculateWineScore()} thresholds={[{value: 60000, label: "60000"},{value: 120000, label: "120000"},{value:160000, label: "160000"}] } maxValue={200000} maxWidth="500px"></MeterThreshold>
+
                     <p>A minimum of 60,000 score is required for Glyph Lore <span>Rank 3</span> and <span>Rank 2</span></p>
                 </div>
 
