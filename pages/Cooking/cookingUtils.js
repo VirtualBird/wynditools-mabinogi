@@ -85,7 +85,7 @@ export function getCookingRankByMethod(methodName)
             return "Rank 8";
         case "Jam Making":
             return "Rank 7";
-        case "Pie Making":
+        case "Pie Baking":
             return "Rank 6";
         case "Steaming":
             return "Rank 5";
