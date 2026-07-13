@@ -165,11 +165,11 @@ function getRequiredCookingRankAll(itemObj)
     const currentRank = getCookingRankByMethod(itemObj.method)
 
     //  Maybe add an ignore statement for objects that are purchaseable
-    if (itemObj?.purchase)
-    {
-        console.log(`skipping ${itemObj.name} due to being purchaseable`)
-        return "Rank Novice"
-    }
+    // if (itemObj?.purchase)
+    // {
+    //     console.log(`skipping ${itemObj.name} due to being purchaseable`)
+    //     return "Rank Novice"
+    // }
 
     let highestNestedRank = "Rank Novice"
 

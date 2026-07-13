@@ -11,7 +11,7 @@ import RatioBar from './components/RatioBar.jsx'
 
 import './Cooking.css'
 
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 
 export default function Cooking(){
 
@@ -23,7 +23,7 @@ export default function Cooking(){
     const [searchIsFocused, setSearchFocused] = useState(false)
 
     const [mainItem, setMainItem] = React.useState(null)
-    const [recipeTree, setRecipeTree] = React.useState()
+    // const [recipeTree, setRecipeTree] = React.useState()
     const [selectedItemName, setSelectedItemName] = React.useState(null)
     const [referToRecipes, setReferToRecipes] = React.useState({})
 
@@ -65,13 +65,14 @@ console.log("render", byPreferPurchaseIsChecked)
     }, [referToRecipes])
 
     // Update Recipe Tree when main item changes or refer to recipes changes
-    React.useEffect(() => {
-        if (!mainItem) return
+    // React.useEffect(() => {
+    //     if (!mainItem) return
 
-        // Not sure if I want to keep this here, maybe throw it back into handleItemSearchClick
-        setRecipeTree(getRecipeTree(mainItem))
-    },[mainItem, referToRecipes])
+    //     // Not sure if I want to keep this here, maybe throw it back into handleItemSearchClick
+    //     setRecipeTree(getRecipeTree(mainItem))
+    // },[mainItem, referToRecipes])
 
+    const recipeTree = useMemo(()=> getRecipeTree(mainItem), [mainItem, referToRecipes])
 
     function handleItemSearchClick(itemName){
         const itemObj = getIngredientObjByName(itemName)
@@ -124,6 +125,11 @@ console.log("render", byPreferPurchaseIsChecked)
 
     //  This runs in useEffect whenever anything in recipeTree or referToRecipes changes
     function getRecipeTree(itemObj, selected = "recipe1"){
+
+        if (!itemObj){
+            return false
+        }
+
         const recipe = {}
         const selectedRecipe = getReferToRecipeByName(itemObj.name)
         // If Recipe property exists
@@ -390,7 +396,7 @@ console.log("render", byPreferPurchaseIsChecked)
 
     function renderMainRecipe()
     {
-        if (mainItem && recipeTree){
+        if (mainItem){
             //Uhh so I need to get the recipe tree
             const referRecipe = getReferToRecipeByName(mainItem.name)
             const items = mainItem.recipe[referRecipe]
@@ -509,6 +515,9 @@ console.log("render", byPreferPurchaseIsChecked)
 
     // erm, maybe I should get recipe tree instead?
     function getBaseIngredientsFromRecipeTree(recipeTree){
+        if(!recipeTree){
+            return false
+        }
         const ingredientsArr = []
         // console.log("Starting Base Function ", recipeTree)
 
@@ -612,6 +621,9 @@ console.log("render", byPreferPurchaseIsChecked)
 
     // And then heres a function for turning the baseIngredients list into a counted list as an object
     function countBaseIngredients(ingredientsArr){
+        if (!ingredientsArr){
+            return false
+        }
         const baseIngredientsObj = {}
 
         for (let ingredient of ingredientsArr){
@@ -627,6 +639,10 @@ console.log("render", byPreferPurchaseIsChecked)
     }
 
     function renderBaseIngredients(baseIngObj){
+        if (!baseIngObj){
+            return false
+        }
+
         const elements = []
 
         for (const item in baseIngObj){
@@ -856,13 +872,13 @@ console.log("render", byPreferPurchaseIsChecked)
                 {mainItem && renderMainDish(mainItem)}
 
                 {/* {console.log("Here is the full tree",recipeTree)} */}
-                {recipeTree && renderBaseIngredients((countBaseIngredients(getBaseIngredientsFromRecipeTree(recipeTree))))}
+                {renderBaseIngredients((countBaseIngredients(getBaseIngredientsFromRecipeTree(recipeTree))))}
 
                 {selectedItemName && renderSelectedItem()}
 
-                {recipeTree && renderCookingInstructions(recipeTree)}
+                {renderCookingInstructions(recipeTree)}
 
-                {recipeTree && renderIngredientTree(recipeTree)}
+                {renderIngredientTree(recipeTree)}
 
                 {/* {getBaseIngredientsFromRecipeTree(recipeTree)} */}
                 
